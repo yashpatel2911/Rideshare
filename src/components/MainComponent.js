@@ -38,6 +38,7 @@ class Main extends Component {
           logoutUser={this.props.logoutUser}
           googleLogin={this.props.googleLogin}
           />   
+          <Footer />
         
       </div>
     );

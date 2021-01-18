@@ -54,33 +54,26 @@ class Header extends Component {
                 <Navbar dark expand="md">
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
-                        <NavbarBrand className="mr-auto" href="/">
-                            <img src="" height="30" width="41"
+                        <NavbarBrand className="mr-auto navbar-text" href="/">
+                            <img src="" height="30" width="41" className="navbartext"
                                 alt="Rideshare" />
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
-                            <Nav navbar>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/home">
-                                        <span className="fa fa-home fa-lg"></span> Home
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/aboutus">
-                                        <span className="fa fa-info fa-lg"></span> About Us
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/contactus">
-                                        <span className="fa fa-address-card fa-lg"></span> Contact Us
-                                    </NavLink>
-                                </NavItem>
-                            </Nav>
                             <Nav className="ml-auto" navbar>
+                                <NavItem className="mr-2">
+                                    <NavLink className="nav-link" to="/aboutus">
+                                        <span className="navbartext"> About Us </span>
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem className="mr-2">
+                                    <NavLink className="nav-link " to="/contactus">
+                                        <span className="navbartext"> Contact Us </span>
+                                    </NavLink>
+                                </NavItem>
                                 <NavItem>
                                     { !this.props.auth.isAuthenticated ?
                                         <Button outline onClick={this.toggleModal}>
-                                            <span className="fa fa-sign-in fa-lg"></span> Login
+                                            <span className="fa fa-sign-in fa-lg "> Login </span>
                                             {this.props.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
@@ -108,8 +101,8 @@ class Header extends Component {
                     <div className="container">
                         <div className="row row-header">
                             <div className="col-12 col-sm-6">
-                                <h1>Ristorante Con Fusion</h1>
-                                <p>We take inspiration from the World's best cuisines, and create a unique fusion experience. Our lipsmacking creations will tickle your culinary senses!</p>
+                                <h1>Find Your Cheapest Ride Here!</h1>
+                                <p>We provide rideshare for intercity as well as intracity</p>
                             </div>
                         </div>
                     </div>
