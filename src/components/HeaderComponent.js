@@ -10,13 +10,16 @@ class Header extends Component {
         super(props);
         this.state = {
             isNavOpen: false,
-            isModalOpen: false
+            isLoginModelOpen: false,
+            isSignupModelOpen: false
         };
         this.toggleNav = this.toggleNav.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
+        this.toggleLoginModal = this.toggleLoginModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.handleSignup = this.handleSignup.bind(this);
+        this.toggleSignupModal = this.toggleSignupModal.bind(this);
     }
 
     toggleNav() {
@@ -25,21 +28,34 @@ class Header extends Component {
         });
     }
 
-    toggleModal() {
+    toggleLoginModal() {
         this.setState({
-            isModalOpen: !this.state.isModalOpen
+            isLoginModelOpen: !this.state.isLoginModelOpen
+        });
+    }
+
+    toggleSignupModal() {
+        this.setState({
+            isSignupModelOpen: !this.state.isSignupModelOpen
         });
     }
 
     handleLogin(event) {
-        this.toggleModal();
-        this.props.loginUser({username: this.username.value, password: this.password.value});
+        this.toggleLoginModal();
+        this.props.loginUser({email: this.email.value, password: this.password.value});
+        event.preventDefault();
+
+    }
+
+    handleSignup(event) {
+        this.toggleSignupModal();
+        this.props.signupUser({email: this.email.value, password: this.password.value});
         event.preventDefault();
 
     }
 
     handleGoogleLogin(event) {
-        this.toggleModal();
+        this.toggleLoginModal();
         this.props.googleLogin();
         event.preventDefault();
     }
@@ -55,7 +71,7 @@ class Header extends Component {
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
                         <NavbarBrand className="mr-auto navbar-text" href="/">
-                            <img src="" height="30" width="41" className="navbartext"
+                            <img src="/rideshare.png" height="60" width="100" className="navbartext"
                                 alt="Rideshare" />
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
@@ -70,9 +86,9 @@ class Header extends Component {
                                         <span className="navbartext"> Contact Us </span>
                                     </NavLink>
                                 </NavItem>
-                                <NavItem>
+                                <NavItem className="mr-2">
                                     { !this.props.auth.isAuthenticated ?
-                                        <Button outline onClick={this.toggleModal}>
+                                        <Button outline onClick={this.toggleLoginModal}>
                                             <span className="fa fa-sign-in fa-lg "> Login </span>
                                             {this.props.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
@@ -93,6 +109,21 @@ class Header extends Component {
                                     }
 
                                 </NavItem>
+                                <NavItem>
+                                    { !this.props.auth.isAuthenticated ?
+                                        <Button outline onClick={this.toggleSignupModal}>
+                                            <span className="fa fa-sign-up fa-lg "> SignUp </span>
+                                            {this.props.auth.isFetching ?
+                                                <span className="fa fa-spinner fa-pulse fa-fw"></span>
+                                                : null
+                                            }
+                                        </Button>
+                                        :
+                                        <div>
+                                        </div>
+                                    }
+
+                                </NavItem>
                             </Nav>
                         </Collapse>
                     </div>
@@ -107,31 +138,46 @@ class Header extends Component {
                         </div>
                     </div>
                 </Jumbotron>
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+                <Modal isOpen={this.state.isLoginModelOpen} toggle={this.toggleLoginModal}>
+                    <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Email</Label>
-                                <Input type="text" id="username" name="username"
-                                    innerRef={(input) => this.username = input} />
+                                <Label htmlFor="email">Email</Label>
+                                <Input type="text" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="password">Password</Label>
                                 <Input type="password" id="password" name="password"
                                     innerRef={(input) => this.password = input}  />
                             </FormGroup>
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" name="remember"
-                                    innerRef={(input) => this.remember = input}  />
-                                    Remember me
-                                </Label>
-                            </FormGroup>
                             <Button type="submit" value="submit" color="primary">Login</Button>
                         </Form>
                         <p></p>
                         <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isSignupModelOpen} toggle={this.toggleSignupModal}>
+                    <ModalHeader toggle={this.toggleSignupModal}>SignUp</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleSignup}>
+                            <FormGroup>
+                                <Label htmlFor="email">Email</Label>
+                                <Input type="text" id="email" name="email"
+                                    innerRef={(input) => this.email = input} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password"
+                                    innerRef={(input) => this.password = input}  />
+                            </FormGroup>
+                            
+                            <Button type="submit" value="submit" color="primary">SignUp</Button>
+                        </Form>
+                        <p></p>
+                        <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Signup with Google</Button>
                     </ModalBody>
                 </Modal>
             </React.Fragment>
