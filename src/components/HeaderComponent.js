@@ -64,6 +64,10 @@ class Header extends Component {
         this.props.logoutUser();
     }
 
+    handleProfileUpdate(){
+
+    }
+
     render() {
         return(
             <React.Fragment>
@@ -98,6 +102,9 @@ class Header extends Component {
                                         :
                                         <div>
                                         <div className="navbar-text mr-3">{this.props.auth.user.displayName}</div>
+                                        <Button outline onClick={this.handleProfileUpdate}>
+                                        <span className="fa fa-sign-out fa-lg"></span> Update Profile
+                                        </Button>
                                         <Button outline onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout
                                             {this.props.auth.isFetching ?
