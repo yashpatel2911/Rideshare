@@ -3,14 +3,11 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
-import { loginUser, logoutUser, googleLogin, signupUser } from '../redux/ActionCreators';
-=======
 import { loginUser, logoutUser, googleLogin, signupUser, postFindRide } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import FindRide from './FindRide';
->>>>>>> 5bd3857b894b4694fd4cba7c64443f5d41613734
+
 
 const mapStateToProps = state => {
     return {
