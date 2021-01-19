@@ -109,9 +109,10 @@ export const googleLogin = () => (dispatch) => {
         });
 }
 
-export const postFindRide = (data) => (dispatch) => {
+export const findRide = (data) => (dispatch) => {
+    dispatch(fetchRideRequest());
 
-    return firestore.collection('rides').where('source', '==', data.src).get()
+    return firestore.collection('rides').where('source', '==', data.src).where('destination', '==', data.dst).get()
         .then(snapshot => {
             let rides = [];
             snapshot.forEach(doc => {
@@ -123,17 +124,26 @@ export const postFindRide = (data) => (dispatch) => {
             return rides;
         })
         .then(rides => dispatch(fetchRide(rides)))
-        .catch();
+        .catch(error => dispatch(fetchRideFailed(error.message)));
 }
 
-/*export const postRide = (rides) => (dispatch) => {
+export const postRide = (data) => (dispatch) => {
         
-    return firestore.collection('rides').add(rides)
-    .then(response => { console.log('Rides', response); alert('Thank you for your feedback!'); })
+    return firestore.collection('rides').add(data)
+    .then(response => { console.log('Rides', response); alert('Your ride has been successfully posted!'); })
     .catch(error =>  { console.log('Rides', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
-};*/
+};
+
+export const fetchRideRequest = () => ({
+    type: ActionTypes.FETCH_RIDES_REQUEST
+});
 
 export const fetchRide = (rides) => ({
     type: ActionTypes.FETCH_RIDES,
     rides
+});
+
+export const fetchRideFailed = (errmess) => ({
+    type: ActionTypes.FETCH_RIDES_FAILURE,
+    payload: errmess
 });

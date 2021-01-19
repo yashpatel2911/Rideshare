@@ -4,7 +4,7 @@ import { Form, FormGroup, Input,Button } from 'reactstrap';
 //import { Control, Form, Errors } from 'react-redux-form';
 
 
-class FindRide extends Component {
+class PostRide extends Component {
 
     constructor(props) {
         super(props);
@@ -14,7 +14,7 @@ class FindRide extends Component {
 
     handleSubmit(event) {
         
-        this.props.findRide({src: this.src.value, dst: this.dst.value});
+        this.props.postRide({src: this.src.value, dst: this.dst.value});
         event.preventDefault();
     }
 
@@ -33,7 +33,7 @@ class FindRide extends Component {
                             <Input type="text" id="dst" name="dst" placeholder="To"
                                 innerRef={(input) => this.dst = input}  />
                         </FormGroup>
-                        <Button type="submit" value="submit" color="primary">Search</Button>
+                        <Button type="submit" value="submit" color="primary">Post</Button>
                     </Form>
                 </div>
             </div>
@@ -41,4 +41,4 @@ class FindRide extends Component {
     }
 }
 
-export default FindRide;
+export default PostRide;

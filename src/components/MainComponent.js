@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-import { withRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, googleLogin, signupUser, postFindRide } from '../redux/ActionCreators';
+import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import FindRide from './FindRide';
+import PostRide from './PostRide';
+import { Button } from 'reactstrap';
 
 const mapStateToProps = state => {
     return {
@@ -21,7 +23,8 @@ const mapDispatchToProps = (dispatch) => ({
   logoutUser: () => dispatch(logoutUser()),
   googleLogin: () => dispatch(googleLogin()),
   
-  postFindRide: (data) => dispatch(postFindRide(data))
+  findRide: (data) => dispatch(findRide(data)),
+  postRide: (data) => dispatch(postRide(data))
 });
 
 class Main extends Component {
@@ -36,6 +39,17 @@ class Main extends Component {
 
   render() {
 
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+      <Route {...rest} render={(props) => (
+        this.props.auth.isAuthenticated
+          ? <Component {...props} />
+          : <Redirect to={{
+              pathname: '/postride',
+              state: { from: props.location }
+            }} />
+      )} />
+    );
+
     return (
       <div>
         <Header auth={this.props.auth} 
@@ -44,7 +58,10 @@ class Main extends Component {
           logoutUser={this.props.logoutUser}
           googleLogin={this.props.googleLogin}
           />   
-          <FindRide rides={this.props.rides} postFindRide={this.props.postFindRide} />
+          <FindRide rides={this.props.rides} findRide={this.props.findRide} />
+          
+           <PostRide postRide={this.props.postRide}/>
+          
           <Footer />
         
       </div>
