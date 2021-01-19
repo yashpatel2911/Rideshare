@@ -151,7 +151,7 @@ class Header extends Component {
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
                                 <Label htmlFor="email">Email</Label>
-                                <Input type="text" id="email" name="email"
+                                <Input type="text" id="email" name="email"  placeholder="ex:smith@gmail.com"
                                     innerRef={(input) => this.email = input} />
                             </FormGroup>
                             <FormGroup>
@@ -172,7 +172,7 @@ class Header extends Component {
                         <Form onSubmit={this.handleSignup}>
                             <FormGroup>
                                 <Label htmlFor="email">Email</Label>
-                                <Input type="text" id="email" name="email"
+                                <Input type="text" id="email" name="email" placeholder="ex:smith@gmail.com"
                                     innerRef={(input) => this.email = input} />
                             </FormGroup>
                             <FormGroup>
