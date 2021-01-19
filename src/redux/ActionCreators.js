@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-import { auth, firestore, fireauth, firebasestore } from '../firebase/firebase';
+import { auth, firestore, fireauth } from '../firebase/firebase';
 
 export const requestLogin = () => {
     return {
@@ -108,3 +108,32 @@ export const googleLogin = () => (dispatch) => {
             dispatch(loginError(error.message));
         });
 }
+
+export const postFindRide = (data) => (dispatch) => {
+
+    return firestore.collection('rides').where('source', '==', data.src).get()
+        .then(snapshot => {
+            let rides = [];
+            snapshot.forEach(doc => {
+                const data = doc.data()
+                const _id = doc.id
+                rides.push({_id, ...data });
+            });
+            
+            return rides;
+        })
+        .then(rides => dispatch(fetchRide(rides)))
+        .catch();
+}
+
+/*export const postRide = (rides) => (dispatch) => {
+        
+    return firestore.collection('rides').add(rides)
+    .then(response => { console.log('Rides', response); alert('Thank you for your feedback!'); })
+    .catch(error =>  { console.log('Rides', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
+};*/
+
+export const fetchRide = (rides) => ({
+    type: ActionTypes.FETCH_RIDES,
+    rides
+});
