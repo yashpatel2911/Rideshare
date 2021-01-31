@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Header from './HeaderComponent';
+import RideRequest from './RideRequestForm'
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide } from '../redux/ActionCreators';
+import { autoRide } from '../redux/autoRide/autoRideActions'
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import FindRide from './FindRide';
@@ -14,7 +16,8 @@ import { Button } from 'reactstrap';
 const mapStateToProps = state => {
     return {
         auth: state.auth,
-        rides: state.rides
+        rides: state.rides,
+        autoRide: state.autoRide
     }
 }
 
@@ -25,7 +28,8 @@ const mapDispatchToProps = (dispatch) => ({
   googleLogin: () => dispatch(googleLogin()),
   
   findRide: (data) => dispatch(findRide(data)),
-  postRide: (data) => dispatch(postRide(data))
+  postRide: (data) => dispatch(postRide(data)),
+  autoRideRequest: (data) => dispatch(autoRide(data))
 });
 
 class Main extends Component {
@@ -62,6 +66,7 @@ class Main extends Component {
           <FindRide rides={this.props.rides} findRide={this.props.findRide} />
           
            <PostRide postRide={this.props.postRide}/>
+           <RideRequest autoRide={this.props.autoRide} autoRideRequest={this.props.autoRideRequest}/>
           
           <Footer />
         

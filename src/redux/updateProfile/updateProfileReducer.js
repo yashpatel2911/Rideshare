@@ -6,7 +6,7 @@ import {
 
 const initialState = {
     isLoading: false,
-    isAuthenticated: 
+    isAuthenticated: null
 }
 
 export const updateProfileReducer = (state, action) => {
