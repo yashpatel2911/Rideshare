@@ -65,6 +65,14 @@ export const signupUser = (creds) => (dispatch) => {
         localStorage.setItem('user', JSON.stringify(user));
         // Dispatch the success action
         dispatch(receiveSignup(user));
+        var userEmail = {
+            email: user.email,
+            name: user.displayName,
+            id: user.uid,
+            phoneNumber: user.phoneNumber,
+            signUpDate: user.metadata.creationTime
+        }
+        dispatch(registerUser(userEmail));
     })
     .catch(error => dispatch(signupError(error.message)))
 };
@@ -94,6 +102,11 @@ export const logoutUser = () => (dispatch) => {
     dispatch(receiveLogout())
 }
 
+export const registerUser = (user) => (dispatch) => {
+    return firestore.collection('users').doc(user.id).set(user)
+        .then();
+}
+
 export const googleLogin = () => (dispatch) => {
     const provider = new fireauth.GoogleAuthProvider();
 
@@ -103,6 +116,14 @@ export const googleLogin = () => (dispatch) => {
             localStorage.setItem('user', JSON.stringify(user));
             // Dispatch the success action
             dispatch(receiveLogin(user));
+            var userEmail = {
+                email: user.email,
+                name: user.displayName,
+                id: user.uid,
+                phoneNumber: user.phoneNumber,
+                signUpDate: user.metadata.creationTime
+            }
+            dispatch(registerUser(userEmail));
         })
         .catch((error) => {
             dispatch(loginError(error.message));
