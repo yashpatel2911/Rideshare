@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { autoRide } from '../redux/autoRide/autoRideActions'
+import React, { Component } from 'react'
 
 class RideRequest extends Component {
 
@@ -7,7 +6,6 @@ class RideRequest extends Component {
         super(props)
 
         const tomorrowDate = this.tomorrowDate()
-        console.log(props)
 
         this.state = {
             pickupAddress: "",
@@ -25,8 +23,14 @@ class RideRequest extends Component {
     tomorrowDate = () => {
         const tomorrow = new Date()
         tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrow_date = tomorrow.getFullYear() + "-" + parseInt(tomorrow.getMonth())+1 + "-" + tomorrow.getDate()
+        const tomorrow_date = tomorrow.getFullYear() + "-" + this.padZero(parseInt(tomorrow.getMonth())+1) + "-" + this.padZero(tomorrow.getDate())
         return tomorrow_date
+    }
+
+    padZero = e => {
+        const remainder = parseInt(parseInt(e) / 10)
+        if(remainder !== 0) return e
+        else return "0"+e
     }
 
     updateInput = e => {
@@ -43,14 +47,13 @@ class RideRequest extends Component {
 
     sendRequest = e => {
         e.preventDefault();
-        
-        // Printing the output on console
-        console.log(this.state)
 
         // Inserting the request into database
         this.props.autoRideRequest({ rideDetail:this.state })
 
         const tomorrowDate = this.tomorrowDate()
+
+        // Setting back to the original state
         this.setState({
             pickupAddress: "",
             pickupCity: "",
