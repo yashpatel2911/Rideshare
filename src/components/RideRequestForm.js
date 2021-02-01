@@ -66,6 +66,7 @@ class RideRequest extends Component {
 
     render(){
         return(
+            <div className="container">
             <form onSubmit={this.sendRequest}>
                 <div>
                     <div>Pickup Details</div>
@@ -107,6 +108,7 @@ class RideRequest extends Component {
                     <button type="submit">Request Ride</button>
                 </div>
             </form>
+            </div>
         )
     }
 }

@@ -133,7 +133,7 @@ export const googleLogin = () => (dispatch) => {
 export const findRide = (data) => (dispatch) => {
     dispatch(fetchRideRequest());
 
-    return firestore.collection('rides').where('source', '==', data.src).where('destination', '==', data.dst).get()
+    return firestore.collection('rides').where('src', '==', data.src).where('dst', '==', data.dst).get()
         .then(snapshot => {
             let rides = [];
             snapshot.forEach(doc => {

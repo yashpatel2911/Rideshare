@@ -9,13 +9,26 @@ class FindRide extends Component {
     constructor(props) {
         super(props);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            src: "",
+            dst: ""
+        }
     }
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         
-        this.props.findRide({src: this.src.value, dst: this.dst.value});
+        this.props.findRide(this.state);
         event.preventDefault();
+        this.setState({
+            src: "",
+            dst: ""
+        })
+    }
+
+    updateInput = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
     render() {
@@ -23,15 +36,14 @@ class FindRide extends Component {
             <div className="container">
                 <div className="row">
                     <Form onSubmit={this.handleSubmit}>
-                        <FormGroup>
-                            
+                        <FormGroup>    
                             <Input type="text" id="src" name="src"  placeholder="From"
-                                innerRef={(input) => this.src = input} />
+                                onChange={this.updateInput} value={this.state.src}/>
                         </FormGroup>
                         <FormGroup>
                             
                             <Input type="text" id="dst" name="dst" placeholder="To"
-                                innerRef={(input) => this.dst = input}  />
+                                onChange={this.updateInput} value={this.state.dst}  />
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">Search</Button>
                     </Form>
