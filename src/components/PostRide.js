@@ -9,13 +9,48 @@ class PostRide extends Component {
     constructor(props) {
         super(props);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        const tomorrowDate = this.tomorrowDate();
+
+        this.state = {
+            src: "",
+            dst: "",
+            rideDate: tomorrowDate,
+            rideTime: "06:00"
+        }
     }
 
-    handleSubmit(event) {
+    tomorrowDate = () => {
+        const tomorrow = new Date()
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrow_date = tomorrow.getFullYear() + "-" + this.padZero(parseInt(tomorrow.getMonth())+1) + "-" + this.padZero(tomorrow.getDate())
+        return tomorrow_date
+    }
+
+    padZero = e => {
+        const remainder = parseInt(parseInt(e) / 10)
+        if(remainder !== 0) return e
+        else return "0"+e
+    }
+
+    handleSubmit = (event) => {
         
-        this.props.postRide({src: this.src.value, dst: this.dst.value});
+        this.props.postRide(this.state);
         event.preventDefault();
+
+        const tomorrowDate = this.tomorrowDate()
+        
+        this.setState({
+            src: "",
+            dst: "",
+            rideDate: tomorrowDate,
+            rideTime: "06:00"
+        })
+    }
+
+    updateInput = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
     render() {
@@ -24,14 +59,20 @@ class PostRide extends Component {
                 <div className="row">
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
-                            
                             <Input type="text" id="src" name="src"  placeholder="From"
-                                innerRef={(input) => this.src = input} />
+                                onChange={this.updateInput} value={this.state.src}/>
                         </FormGroup>
                         <FormGroup>
-                            
                             <Input type="text" id="dst" name="dst" placeholder="To"
-                                innerRef={(input) => this.dst = input}  />
+                                onChange={this.updateInput} value={this.state.dst}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Input type="date" name="rideDate" min={this.state.rideDate} onChange={this.updateInput} 
+                                value={this.state.rideDate} required />
+                        </FormGroup>
+                        <FormGroup>
+                            <Input type="time" name="rideTime" onChange={this.updateInput} 
+                                value={this.state.rideTime} required />
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">Post</Button>
                     </Form>
