@@ -47,7 +47,7 @@ class PostRide extends Component {
         })
     }
 
-    updateInput = e => {
+    handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -60,18 +60,18 @@ class PostRide extends Component {
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Input type="text" id="src" name="src"  placeholder="From"
-                                onChange={this.updateInput} value={this.state.src}/>
+                                onChange={this.handleChange} value={this.state.src}/>
                         </FormGroup>
                         <FormGroup>
                             <Input type="text" id="dst" name="dst" placeholder="To"
-                                onChange={this.updateInput} value={this.state.dst}/>
+                                onChange={this.handleChange} value={this.state.dst}/>
                         </FormGroup>
                         <FormGroup>
-                            <Input type="date" name="rideDate" min={this.state.rideDate} onChange={this.updateInput} 
+                            <Input type="date" name="rideDate" min={this.state.rideDate} onChange={this.handleChange} 
                                 value={this.state.rideDate} required />
                         </FormGroup>
                         <FormGroup>
-                            <Input type="time" name="rideTime" onChange={this.updateInput} 
+                            <Input type="time" name="rideTime" onChange={this.handleChange} 
                                 value={this.state.rideTime} required />
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">Post</Button>

@@ -4,8 +4,7 @@ import RideRequest from './RideRequestForm'
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide } from '../redux/ActionCreators';
-import { autoRide } from '../redux/autoRide/autoRideActions'
+import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import FindRide from './FindRide';
@@ -44,17 +43,6 @@ class Main extends Component {
 
   render() {
 
-    const PrivateRoute = ({ component: Component, ...rest }) => (
-      <Route {...rest} render={(props) => (
-        this.props.auth.isAuthenticated
-          ? <Component {...props} />
-          : <Redirect to={{
-              pathname: '/postride',
-              state: { from: props.location }
-            }} />
-      )} />
-    );
-
     return (
       <div>
         <Header auth={this.props.auth} 
@@ -63,13 +51,14 @@ class Main extends Component {
           logoutUser={this.props.logoutUser}
           googleLogin={this.props.googleLogin}
           />   
-          <FindRide rides={this.props.rides} findRide={this.props.findRide} />
-          
-           <PostRide postRide={this.props.postRide}/>
-           <RideRequest autoRide={this.props.autoRide} autoRideRequest={this.props.autoRideRequest}/>
-          
-          <Footer />
+
+        <FindRide rides={this.props.rides} findRide={this.props.findRide} />
         
+        <PostRide postRide={this.props.postRide}/>
+        
+        <RideRequest autoRide={this.props.autoRide} autoRideRequest={this.props.autoRideRequest}/>
+        
+        <Footer />
       </div>
     );
   }
