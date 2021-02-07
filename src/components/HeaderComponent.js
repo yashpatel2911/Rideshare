@@ -13,58 +13,51 @@ class Header extends Component {
             isLoginModelOpen: false,
             isSignupModelOpen: false
         };
-        this.toggleNav = this.toggleNav.bind(this);
-        this.toggleLoginModal = this.toggleLoginModal.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
-        this.handleSignup = this.handleSignup.bind(this);
-        this.toggleSignupModal = this.toggleSignupModal.bind(this);
     }
 
-    toggleNav() {
+    toggleNav = () => {
         this.setState({
             isNavOpen: !this.state.isNavOpen
         });
     }
 
-    toggleLoginModal() {
+    toggleLoginModal = () => {
         this.setState({
             isLoginModelOpen: !this.state.isLoginModelOpen
         });
     }
 
-    toggleSignupModal() {
+    toggleSignupModal = () => {
         this.setState({
             isSignupModelOpen: !this.state.isSignupModelOpen
         });
     }
 
-    handleLogin(event) {
+    handleLogin = (event) => {
         this.toggleLoginModal();
         this.props.loginUser({email: this.email.value, password: this.password.value});
         event.preventDefault();
 
     }
 
-    handleSignup(event) {
+    handleSignup = (event) => {
         this.toggleSignupModal();
         this.props.signupUser({email: this.email.value, password: this.password.value});
         event.preventDefault();
 
     }
 
-    handleGoogleLogin(event) {
+    handleGoogleLogin = (event) => {
         this.toggleLoginModal();
         this.props.googleLogin();
         event.preventDefault();
     }
 
-    handleLogout() {
+    handleLogout = () => {
         this.props.logoutUser();
     }
 
-    handleProfileUpdate(){
+    handleProfileUpdate = () => {
 
     }
 

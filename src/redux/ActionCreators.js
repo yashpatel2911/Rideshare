@@ -1,5 +1,9 @@
 import * as ActionTypes from './ActionTypes';
 import { auth, firestore, fireauth } from '../firebase/firebase';
+import firebase from 'firebase';
+
+
+/*****************************  User Login Actions *******************************************************/
 
 export const requestLogin = () => {
     return {
@@ -35,6 +39,8 @@ export const loginUser = (creds) => (dispatch) => {
     .catch(error => dispatch(loginError(error.message)))
 };
 
+/*****************************  User SignUp Actions *******************************************************/
+
 export const requestSignup = () => {
     return {
         type: ActionTypes.SIGNUP_REQUEST
@@ -56,7 +62,7 @@ export const signupError = (message) => {
 }
 
 export const signupUser = (creds) => (dispatch) => {
-    // We dispatch requestLogin to kickoff the call to the API
+    // We dispatch requestSignup to kickoff the call to the API
     dispatch(requestSignup(creds))
 
     return auth.createUserWithEmailAndPassword(creds.email, creds.password)
@@ -76,6 +82,13 @@ export const signupUser = (creds) => (dispatch) => {
     })
     .catch(error => dispatch(signupError(error.message)))
 };
+
+export const registerUser = (user) => (dispatch) => {
+    return firestore.collection('users').doc(user.id).set(user)
+        .then();
+}
+
+/*****************************  User Logout Actions *******************************************************/
 
 export const requestLogout = () => {
     return {
@@ -102,10 +115,7 @@ export const logoutUser = () => (dispatch) => {
     dispatch(receiveLogout())
 }
 
-export const registerUser = (user) => (dispatch) => {
-    return firestore.collection('users').doc(user.id).set(user)
-        .then();
-}
+/*****************************  User Google login Action *******************************************************/
 
 export const googleLogin = () => (dispatch) => {
     const provider = new fireauth.GoogleAuthProvider();
@@ -130,6 +140,8 @@ export const googleLogin = () => (dispatch) => {
         });
 }
 
+/*****************************  Find Rides Actions *******************************************************/
+
 export const findRide = (data) => (dispatch) => {
     dispatch(fetchRideRequest());
 
@@ -148,13 +160,6 @@ export const findRide = (data) => (dispatch) => {
         .catch(error => dispatch(fetchRideFailed(error.message)));
 }
 
-export const postRide = (data) => (dispatch) => {
-        
-    return firestore.collection('rides').add(data)
-    .then(response => { console.log('Rides', response); alert('Your ride has been successfully posted!'); })
-    .catch(error =>  { console.log('Rides', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
-};
-
 export const fetchRideRequest = () => ({
     type: ActionTypes.FETCH_RIDES_REQUEST
 });
@@ -168,3 +173,83 @@ export const fetchRideFailed = (errmess) => ({
     type: ActionTypes.FETCH_RIDES_FAILURE,
     payload: errmess
 });
+
+
+/*****************************  Post Rides Actions *******************************************************/
+
+export const postRide = (data) => (dispatch) => {
+        
+    return firestore.collection('rides').add(data)
+    .then(response => { console.log('Rides', response); alert('Your ride has been successfully posted!'); })
+    .catch(error =>  { console.log('Rides', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
+};
+
+/*****************************  Request Rides Actions *******************************************************/
+
+export const requestAutoRide = () => {
+    return{
+        type: ActionTypes.REQUEST_AUTO_RIDE
+    }
+}
+
+export const successAutoRide = (msg) => {
+    return{
+        type: ActionTypes.SUCCESS_AUTO_RIDE,
+        payload: msg
+    }
+}
+
+export const failureAutoRide = (err) => {
+    return{
+        type: ActionTypes.FAILURE_AUTO_RIDE,
+        payload: err
+    }
+}
+
+export const autoRide = (ride) => (dispatch) => {
+        dispatch(requestAutoRide)
+        
+        const ridetime = dateToFirebaseTimeStamp(ride.rideDetail.rideDate, ride.rideDetail.rideTime)
+        const endtime = ride.rideDetail.isRideTwoWay 
+                        ?  dateToFirebaseTimeStamp(ride.rideDetail.endDate, ride.rideDetail.endTime) 
+                        : null
+
+        const rideDetails = {
+            pickUp: {
+                Address: ride.rideDetail.pickupAddress,
+                City: ride.rideDetail.pickupCity
+            },
+            destination: {
+                Address: ride.rideDetail.destAddress,
+                City: ride.rideDetail.destCity
+            },
+            isRideTwoWay: ride.rideDetail.isRideTwoWay,
+            rideTime: ridetime,
+            returnTime: endtime            
+        }
+
+        firestore.collection('ride-request').add(
+            rideDetails
+        )
+        .then(
+            dispatch(successAutoRide("Your ride request has been submitted successfully."))
+        )
+        .catch(error => {
+                dispatch(failureAutoRide(error))
+            }
+        )
+}
+
+const dateToFirebaseTimeStamp = (fulldate, time) => {
+    const d = fulldate.split("-")
+    const year = d[0]
+    const month = parseInt(d[1]) - 1
+    const date = d[2]
+
+
+    const t = time.split(":")
+    const hour = t[0]
+    const minute = t[1]
+
+    return firebase.firestore.Timestamp.fromDate(new Date(year, month, date, hour, minute))
+}
