@@ -1,8 +1,4 @@
-import {
-    REQUEST_AUTO_RIDE,
-    SUCCESS_AUTO_RIDE,
-    FAILURE_AUTO_RIDE
-} from './autoRideTypes'
+import * as ActionTypes from './ActionTypes';
 
 const initialState = {
     isLoading: false,
@@ -10,15 +6,15 @@ const initialState = {
 
 export const AutoRide = (state = initialState, action) => {
     switch (action.type) {
-        case REQUEST_AUTO_RIDE: return{
+        case ActionTypes.REQUEST_AUTO_RIDE: return{
             ...state,
             isLoading: true
         }
-        case SUCCESS_AUTO_RIDE: return{
+        case ActionTypes.SUCCESS_AUTO_RIDE: return{
             ...state,
             isLoading: false
         }
-        case FAILURE_AUTO_RIDE: return{
+        case ActionTypes.FAILURE_AUTO_RIDE: return{
             ...state,
             isLoading: false
         }    
