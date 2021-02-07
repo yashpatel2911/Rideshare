@@ -9,9 +9,13 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            email: "",
+            password: "",
+            confirmPassword: "",
             isNavOpen: false,
             isLoginModelOpen: false,
-            isSignupModelOpen: false
+            isSignupModelOpen: false,
+            isPasswordMatch: true
         };
     }
 
@@ -35,16 +39,28 @@ class Header extends Component {
 
     handleLogin = (event) => {
         this.toggleLoginModal();
-        this.props.loginUser({email: this.email.value, password: this.password.value});
+        this.props.loginUser({email: this.state.email, password: this.state.password});
         event.preventDefault();
 
     }
 
     handleSignup = (event) => {
-        this.toggleSignupModal();
-        this.props.signupUser({email: this.email.value, password: this.password.value});
+
+        if (this.state.password !== this.state.confirmPassword) {
+            this.setState({
+                isPasswordMatch: false
+            })
+        }   else {
+            this.toggleSignupModal();
+            this.props.signupUser({email: this.state.email, password: this.state.password});
+        }
         event.preventDefault();
 
+    }
+
+    handleCreateNewAccount = (event) => {
+        this.toggleLoginModal();
+        this.toggleSignupModal();
     }
 
     handleGoogleLogin = (event) => {
@@ -55,6 +71,12 @@ class Header extends Component {
 
     handleLogout = () => {
         this.props.logoutUser();
+    }
+
+    handleChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
     handleProfileUpdate = () => {
@@ -143,19 +165,21 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="email">Email</Label>
+                                <Label>Email</Label>
                                 <Input type="text" id="email" name="email"  placeholder="ex:smith@gmail.com"
-                                    innerRef={(input) => this.email = input} />
+                                    onChange={this.handleChange} value={this.state.email} />
                             </FormGroup>
                             <FormGroup>
-                                <Label htmlFor="password">Password</Label>
+                                <Label>Password</Label>
                                 <Input type="password" id="password" name="password"
-                                    innerRef={(input) => this.password = input}  />
+                                    onChange={this.handleChange} value={this.state.password}  />
                             </FormGroup>
                             <Button type="submit" value="submit" color="primary">Login</Button>
                         </Form>
-                        <p></p>
+                        <p>------------------------------------OR---------------------------------</p>
                         <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
+                        <p></p>
+                        <p><a href="javascript:" onClick={this.handleCreateNewAccount}> New User? Create a new account! </a></p>
                     </ModalBody>
                 </Modal>
 
@@ -164,19 +188,27 @@ class Header extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleSignup}>
                             <FormGroup>
-                                <Label htmlFor="email">Email</Label>
+                                <Label>Email</Label>
                                 <Input type="text" id="email" name="email" placeholder="ex:smith@gmail.com"
-                                    innerRef={(input) => this.email = input} />
+                                    onChange={this.handleChange} value={this.state.email}/>
                             </FormGroup>
                             <FormGroup>
-                                <Label htmlFor="password">Password</Label>
+                                <Label>Password</Label>
                                 <Input type="password" id="password" name="password"
-                                    innerRef={(input) => this.password = input}  />
+                                    onChange={this.handleChange} value={this.state.password} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label> Confirm Password</Label>
+                                
+                                {this.state.isPasswordMatch? <p></p> : <p style={{color:"red"}}>Password Doesn't Match!!!</p>} 
+                                
+                                <Input type="password" id="confirmPassword" name="confirmPassword"
+                                    onChange={this.handleChange} value={this.state.confirmPassword} />
                             </FormGroup>
                             
                             <Button type="submit" value="submit" color="primary">SignUp</Button>
                         </Form>
-                        <p></p>
+                        <p>------------------------------------OR---------------------------------</p>
                         <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Signup with Google</Button>
                     </ModalBody>
                 </Modal>

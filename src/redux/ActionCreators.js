@@ -27,7 +27,7 @@ export const loginError = (message) => {
 
 export const loginUser = (creds) => (dispatch) => {
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(requestLogin(creds))
+    dispatch(requestLogin())
 
     return auth.signInWithEmailAndPassword(creds.email, creds.password)
     .then(() => {
@@ -64,6 +64,7 @@ export const signupError = (message) => {
 export const signupUser = (creds) => (dispatch) => {
     // We dispatch requestSignup to kickoff the call to the API
     dispatch(requestSignup(creds))
+    console.log(creds)
 
     return auth.createUserWithEmailAndPassword(creds.email, creds.password)
     .then(() => {
