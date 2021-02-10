@@ -55,15 +55,6 @@ class FindRide extends Component {
 
     render() {
 
-        const ride = this.props.rides.rides.map((ride) => {
-            return (
-                <div key={ride._id} >
-                    <p>{ride._id}</p>
-                    <p>{ride.src}</p>
-                    <p>{ride.dst}</p>
-                </div>
-            )
-        })
         return(
             <div className="container">
                 <div className="row">
@@ -86,9 +77,6 @@ class FindRide extends Component {
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">Search</Button>
                     </Form>
-                    <div className="row">
-                        <span>{ride}</span>
-                    </div>
                 </div>
             </div>
         );

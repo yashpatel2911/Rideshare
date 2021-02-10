@@ -10,6 +10,7 @@ import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, aut
 import FindRide from './FindRide';
 import PostRide from './PostRide';
 import RideForms from './RideForms';
+import Ride from './RenderRide';
 
 
 const mapStateToProps = state => {
@@ -51,7 +52,7 @@ class Main extends Component {
           logoutUser={this.props.logoutUser}
           googleLogin={this.props.googleLogin}
           /> 
-
+        
         <RideForms/>  
           
           
@@ -60,7 +61,7 @@ class Main extends Component {
           <Route path="/postride" component={()=><PostRide postRide={this.props.postRide}/>} />
           <Route path="/requestride" component={()=><RideRequest autoRide={this.props.autoRide} autoRideRequest={this.props.autoRideRequest}/>} />
         </Switch>
-
+        <Ride rides={this.props.rides}/>
         <Footer />
       </div>
     );
