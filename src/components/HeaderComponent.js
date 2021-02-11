@@ -58,7 +58,7 @@ class Header extends Component {
 
     }
 
-    handleCreateNewAccount = (event) => {
+    handleCreateNewAccount = () => {
         this.toggleLoginModal();
         this.toggleSignupModal();
     }
