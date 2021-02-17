@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import Header from './HeaderComponent';
-import RideRequest from './RideRequestForm'
 import Footer from './FooterComponent';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import FindRide from './FindRide';
-import PostRide from './PostRide';
-import RideForms from './RideForms';
-import Ride from './RenderRide';
+import UserProfile from './userProfileComponent'
+import MiddleComponent from './MiddleComponent';
+import LoginComponent from './LoginComponent';
 
 
 const mapStateToProps = state => {
@@ -32,6 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
   autoRideRequest: (data) => dispatch(autoRide(data))
 });
 
+
 class Main extends Component {
 
   componentDidMount() {
@@ -41,27 +40,51 @@ class Main extends Component {
   componentWillUnmount() {
     this.props.logoutUser();
   }
+
+  returnHeaderStore = () => {
+    const store = {
+      auth: this.props.auth, 
+      signupUser: this.props.signupUser,
+      loginUser: this.props.loginUser,
+      logoutUser: this.props.logoutUser,
+      googleLogin: this.props.googleLogin, 
+    }
+
+    return store
+  }
+
+  returnMiddleStore = () => {
+    const store = {
+      rides: this.props.rides,
+      findRide: this.props.findRide,
+      postRide: this.props.postRide,
+      autoRide: this.props.autoRide,
+      autoRideRequest: this.props.autoRideRequest
+    }
+
+    return store
+  }
+
+  returnUserStore = () => {
+    const store = {
+      auth: this.props.auth
+    }
+    
+    return store
+  }
   
   render() {
 
     return (
       <div>
-        <Header auth={this.props.auth} 
-          signupUser={this.props.signupUser}
-          loginUser={this.props.loginUser} 
-          logoutUser={this.props.logoutUser}
-          googleLogin={this.props.googleLogin}
-          /> 
-        
-        <RideForms/>  
-          
-          
+        <Header store={this.returnHeaderStore()}/>
+
         <Switch>
-          <Route path="/findride" component={()=><FindRide rides={this.props.rides} findRide={this.props.findRide} />} />
-          <Route path="/postride" component={()=><PostRide postRide={this.props.postRide}/>} />
-          <Route path="/requestride" component={()=><RideRequest autoRide={this.props.autoRide} autoRideRequest={this.props.autoRideRequest}/>} />
+        <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserStore()}/>} />
+        <Route exact path="/login" component={()=><LoginComponent store={this.returnUserStore()}/> } />
+        <Route path="/" component={()=><MiddleComponent store={this.returnMiddleStore()}/>} />
         </Switch>
-        <Ride rides={this.props.rides}/>
+        
         <Footer />
       </div>
     );
