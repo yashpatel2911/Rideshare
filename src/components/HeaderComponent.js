@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
 class Header extends Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.store)
         this.state = {
             email: "",
             password: "",
@@ -39,7 +40,7 @@ class Header extends Component {
 
     handleLogin = (event) => {
         this.toggleLoginModal();
-        this.props.loginUser({email: this.state.email, password: this.state.password});
+        this.props.store.loginUser({email: this.state.email, password: this.state.password});
         event.preventDefault();
 
     }
@@ -52,7 +53,7 @@ class Header extends Component {
             })
         }   else {
             this.toggleSignupModal();
-            this.props.signupUser({email: this.state.email, password: this.state.password});
+            this.props.store.signupUser({email: this.state.email, password: this.state.password});
         }
         event.preventDefault();
 
@@ -65,12 +66,12 @@ class Header extends Component {
 
     handleGoogleLogin = (event) => {
         this.toggleLoginModal();
-        this.props.googleLogin();
+        this.props.store.googleLogin();
         event.preventDefault();
     }
 
     handleLogout = () => {
-        this.props.logoutUser();
+        this.props.store.logoutUser();
     }
 
     handleChange = e => {
@@ -78,9 +79,9 @@ class Header extends Component {
             [e.target.name]: e.target.value
         })
     }
-
-    handleProfileUpdate = () => {
-
+    
+    handleUpdateProfile = () => {
+        this.props.history.push('/updateProfile')
     }
 
     render() {
@@ -106,23 +107,23 @@ class Header extends Component {
                                     </NavLink>
                                 </NavItem>
                                 <NavItem className="mr-2">
-                                    { !this.props.auth.isAuthenticated ?
+                                    { !this.props.store.auth.isAuthenticated ?
                                         <Button outline onClick={this.toggleLoginModal}>
                                             <span className="fa fa-sign-in fa-lg "> Login </span>
-                                            {this.props.auth.isFetching ?
+                                            {this.props.store.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
                                         </Button>
                                         :
                                         <div>
-                                        <div className="navbar-text mr-3">{this.props.auth.user.displayName}</div>
-                                        <Button outline onClick={this.handleProfileUpdate}>
+                                        <div className="navbar-text mr-3">{this.props.store.auth.user.displayName}</div>
+                                        <Button outline onClick={this.handleUpdateProfile}>
                                         <span className="fa fa-sign-out fa-lg"></span> Update Profile
                                         </Button>
                                         <Button outline onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout
-                                            {this.props.auth.isFetching ?
+                                            {this.props.store.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
@@ -132,10 +133,10 @@ class Header extends Component {
 
                                 </NavItem>
                                 <NavItem>
-                                    { !this.props.auth.isAuthenticated ?
+                                    { !this.props.store.auth.isAuthenticated ?
                                         <Button outline onClick={this.toggleSignupModal}>
                                             <span className="fa fa-sign-up fa-lg "> SignUp </span>
-                                            {this.props.auth.isFetching ?
+                                            {this.props.store.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
@@ -150,16 +151,6 @@ class Header extends Component {
                         </Collapse>
                     </div>
                 </Navbar>
-                <Jumbotron>
-                    <div className="container">
-                        <div className="row row-header">
-                            <div className="col-12 col-sm-6">
-                                <h1>Find Your Cheapest Ride Here!</h1>
-                                <p>We provide rideshare for intercity as well as intracity</p>
-                            </div>
-                        </div>
-                    </div>
-                </Jumbotron>
                 <Modal isOpen={this.state.isLoginModelOpen} toggle={this.toggleLoginModal}>
                     <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
                     <ModalBody>
@@ -217,4 +208,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);
