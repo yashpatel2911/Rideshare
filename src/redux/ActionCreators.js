@@ -254,3 +254,83 @@ const dateToFirebaseTimeStamp = (fulldate, time) => {
 
     return firebase.firestore.Timestamp.fromDate(new Date(year, month, date, hour, minute))
 }
+
+/****************************** Fetching User Profile Actions ******************************/
+export const requestUserProfile = () => {
+    return {
+        type: ActionTypes.FETCH_USER_PROFILE_REQUEST
+    }
+}
+
+export const successUserProfile = (userProfile) => {
+    return{
+        type: ActionTypes.FETCH_USER_PROFILE_SUCCESS,
+        userProfile: userProfile
+    }
+}
+
+export const failureUserProfile = (err) => {
+    return{
+        type: ActionTypes.FETCH_USER_PROFILE_FAILURE,
+        err: err
+    }
+}
+
+export const fetchUserProfile = (userUID) => (dispatch) => {
+    dispatch(requestUserProfile())
+
+    /*firestore
+    .collection('users')
+    .doc(userUID)
+    .get()
+    .then(
+        (doc) => {
+            if(doc.exists){
+                let data = doc.data()
+                dispatch(successUserProfile(data))
+                return data       
+            }
+            else{
+                dispatch(failureUserProfile("No such Document exists."))
+            }
+        }
+    )
+    .catch(err => {
+        dispatch(failureUserProfile(err))
+    })*/
+    console.log(userUID)
+}
+
+/****************************** Updating User Profile Actions ******************************/
+export const requestUpdateUserProfile = () => {
+    return {
+        type: ActionTypes.UPDATE_USER_PROFILE_REQUEST
+    }
+}
+
+export const successUpdateUserProfile = (msg) => {
+    return{
+        type: ActionTypes.UPDATE_USER_PROFILE_SUCCESS,
+        msg: msg
+    }
+}
+
+export const failureUpdateUserProfile = (err) => {
+    return{
+        type: ActionTypes.UPDATE_USER_PROFILE_FAILURE,
+        err: err
+    }
+}
+
+export const UpdateUserProfile = (userUID, userProfile) => (dispatch) => {
+    dispatch(requestUpdateUserProfile())
+    
+    firestore
+    .collection('users')
+    .doc(userUID)
+    .update(userProfile)
+    .then(dispatch(successUpdateUserProfile("Successfully updated your profile")))
+    .catch(err => {
+        dispatch(failureUpdateUserProfile(err))
+    })
+}
