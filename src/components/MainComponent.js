@@ -3,7 +3,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide } from '../redux/ActionCreators';
+import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide, fetchUserProfile } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UserProfile from './userProfileComponent'
@@ -15,7 +15,8 @@ const mapStateToProps = state => {
     return {
         auth: state.auth,
         rides: state.rides,
-        autoRide: state.autoRide
+        autoRide: state.autoRide,
+        userProfile: state.userProfile
     }
 }
 
@@ -24,10 +25,10 @@ const mapDispatchToProps = (dispatch) => ({
   signupUser: (creds) => dispatch(signupUser(creds)),
   logoutUser: () => dispatch(logoutUser()),
   googleLogin: () => dispatch(googleLogin()),
-  
   findRide: (data) => dispatch(findRide(data)),
   postRide: (data) => dispatch(postRide(data)),
-  autoRideRequest: (data) => dispatch(autoRide(data))
+  autoRideRequest: (data) => dispatch(autoRide(data)),
+  fetchUserProfile: (data) => dispatch(fetchUserProfile(data))
 });
 
 
@@ -72,6 +73,16 @@ class Main extends Component {
     
     return store
   }
+
+  returnUserProfileStore = () => {
+    const store = {
+      auth: this.props.auth,
+      userProfile: this.props.userProfile,
+      fetchUserProfile: this.props.fetchUserProfile
+    }
+
+    return store
+  }
   
   render() {
 
@@ -80,7 +91,7 @@ class Main extends Component {
         <Header store={this.returnHeaderStore()}/>
 
         <Switch>
-        <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserStore()}/>} />
+        <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserProfileStore()}/>} />
         <Route exact path="/login" component={()=><LoginComponent store={this.returnUserStore()}/> } />
         <Route path="/" component={()=><MiddleComponent store={this.returnMiddleStore()}/>} />
         </Switch>

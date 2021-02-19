@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { Rides } from './rides';
 import { AutoRide } from './autoRideReducer'
+import { UserProfile } from './userProfileFetchReduce'
 //import { InitialFeedback } from './forms';
 
 export const ConfigureStore = () => {
@@ -12,7 +13,8 @@ export const ConfigureStore = () => {
         combineReducers({
             rides: Rides,
             auth: Auth,
-            autoRide: AutoRide
+            autoRide: AutoRide,
+            userProfile: UserProfile
         }),
         applyMiddleware(thunk, logger)
     );
