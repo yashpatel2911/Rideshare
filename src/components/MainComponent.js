@@ -34,14 +34,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Main extends Component {
 
-  componentDidMount() {
-    
-  }
-
-  componentWillUnmount() {
-    this.props.logoutUser();
-  }
-
   returnHeaderStore = () => {
     const store = {
       auth: this.props.auth, 
@@ -94,12 +86,14 @@ class Main extends Component {
         <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserProfileStore()}/>} />
         <Route exact path="/login" component={()=><LoginComponent store={this.returnUserStore()}/> } />
         <Route path="/" component={()=><MiddleComponent store={this.returnMiddleStore()}/>} />
+       
+        
         </Switch>
         
         <Footer />
       </div>
     );
-  }
+  } 
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

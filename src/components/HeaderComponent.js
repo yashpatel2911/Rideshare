@@ -67,6 +67,7 @@ class Header extends Component {
     handleGoogleLogin = (event) => {
         this.toggleLoginModal();
         this.props.store.googleLogin();
+        this.props.history.push("/");
         event.preventDefault();
     }
 

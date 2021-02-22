@@ -135,6 +135,7 @@ export const googleLogin = () => (dispatch) => {
                 signUpDate: user.metadata.creationTime
             }
             dispatch(registerUser(userEmail));
+            
         })
         .catch((error) => {
             dispatch(loginError(error.message));
