@@ -17,6 +17,13 @@ export const receiveLogin = (user) => {
         user
     }
 }
+
+export const setupLocalstorage = (user) => {
+    return {
+        type: ActionTypes.SETUP_LOCALSTORAGE,
+        user
+    }
+}
   
 export const loginError = (message) => {
     return {
@@ -125,6 +132,7 @@ export const googleLogin = () => (dispatch) => {
         .then((result) => {
             var user = result.user;
             localStorage.setItem('user', JSON.stringify(user));
+            
             // Dispatch the success action
             dispatch(receiveLogin(user));
             var userEmail = {

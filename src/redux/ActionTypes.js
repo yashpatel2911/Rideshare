@@ -13,6 +13,7 @@ export const FETCH_RIDES_FAILURE = 'FETCH_RIDES_FAILURE';
 export const REQUEST_AUTO_RIDE = "REQUEST_AUTO_RIDE";
 export const SUCCESS_AUTO_RIDE = "SUCCESS_AUTO_RIDE";
 export const FAILURE_AUTO_RIDE = "FAILURE_AUTO_RIDE";
+export const SETUP_LOCALSTORAGE = "SETUP_LOCALSTORAGE";
 
 /****************************** Fetching User Profile Types ******************************/
 export const FETCH_USER_PROFILE_REQUEST = 'FETCH_USER_PROFILE_REQUEST'
