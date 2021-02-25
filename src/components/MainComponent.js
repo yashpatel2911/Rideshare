@@ -4,8 +4,6 @@ import Footer from './FooterComponent';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide, fetchUserProfile, setupLocalstorage } from '../redux/ActionCreators';
-//import { actions } from 'react-redux-form';
-//import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UserProfile from './userProfileComponent'
 import MiddleComponent from './MiddleComponent';
 import LoginComponent from './LoginComponent';
@@ -34,21 +32,20 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 class Main extends Component {
-  
+
+  componentDidMount() {
+    this.refreshToken()
+  }
+
   refreshToken=()=> {
     var user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
-      console.log(user)
       this.props.setupLocalstorage(user)
     }
     else {
-      console.log(user)
+      console.log("User Not Exist!!")
     }
-  }
-
-  componentDidMount() {
-    this.refreshToken()
   }
 
   returnHeaderStore = () => {

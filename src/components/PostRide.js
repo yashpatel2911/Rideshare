@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input,Button, Label } from 'reactstrap';
-//import { Link } from 'react-router-dom';
-//import { Control, Form, Errors } from 'react-redux-form';
-import google from 'google'
 
 class PostRide extends Component {
 
@@ -52,10 +49,6 @@ class PostRide extends Component {
             [e.target.name]: e.target.value
         })
     }
-
-    
-
-    
 
     render() {
         return(
