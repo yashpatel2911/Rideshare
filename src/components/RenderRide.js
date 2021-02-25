@@ -7,11 +7,15 @@ import { Loading } from './LoadingComponent';
         return(
             <Card>
                 <CardBody>
-                    <CardTitle>Available Ride</CardTitle>
-                    <CardText>{ride.src}</CardText>
-                    <CardText>{ride.dst}</CardText>
-                    <CardText>{ride.rideTime}</CardText>
-                    <CardText>{ride.rideDate}</CardText>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}>{ride.src} to {ride.dst}</CardText>
+                    
+                    <CardText style={{fontWeight:'bold'}}> Leaving: {ride.rideDate} at {ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> Returning: {ride.rideDate} at {ride.rideTime}</CardText>
+
+                    <br/>
+
+                    <CardText style={{color:'GrayText'}}> Pickup: {ride.src}</CardText>
+                    <CardText style={{color:'GrayText'}}> Dropoff: {ride.dst}</CardText>
                 </CardBody>
             </Card>
         );
@@ -21,9 +25,12 @@ import { Loading } from './LoadingComponent';
 
         const ride = props.rides.rides.map((ride) => {
             return (
-                <div key={ride._id} className="col-12 col-md-5 m-1">
+                
+                <div key={ride._id} className="col-12 ">
                     <RenderRide ride={ride} />
+                    <hr style={{width:'15%', margin:'20px 0px 20px 0px'}} />
                 </div>
+                
             );
         });
 
@@ -31,7 +38,7 @@ import { Loading } from './LoadingComponent';
             return(
                 <div className="container">
                     <div className="row">
-                        <Loading />
+                        {/*<Loading />*/}
                     </div>
                 </div>
             );
@@ -49,6 +56,10 @@ import { Loading } from './LoadingComponent';
             return (
                 <div className="container">
                     <div className="row">
+                        <h1>Available Rides</h1>  
+                    </div>
+                    <hr style={{width:'15%', margin:'50px 0px 50px 0px'}} />
+                    <div className='row'>
                         {ride}
                     </div>
                 </div>

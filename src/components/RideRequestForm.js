@@ -71,66 +71,72 @@ class RideRequest extends Component {
     render(){
         return(
             <div className="container">
-            <Form onSubmit={this.sendRequest}>
-                <div>
-                    
-                    <div><Label>Pickup Details</Label></div>
-                    <div>
-                    <FormGroup>
-                        <Label>Address</Label>
-                        <Input type="text" name="pickupAddress" onChange={this.updateInput} value={this.state.pickupAddress} required />
-                        </FormGroup>
-                    </div>
-                    <div>
-                    <FormGroup>
-                        <Label>City</Label>
-                        <Input type="text" name="pickupCity" onChange={this.updateInput} value={this.state.pickupCity} required />
-                        </FormGroup>
-                    </div>
-                    <div><Label>Destination Details</Label></div>
-                    <div>
-                    <FormGroup>
-                        <Label>Address</Label>
-                        <Input type="text" name="destAddress" onChange={this.updateInput} value={this.state.destAddress} required />
-                    </FormGroup>
-                    </div>
-                    <div>
-                    <FormGroup>
-                        <Label>City</Label>
-                        <Input type="text" name="destCity" onChange={this.updateInput} value={this.state.destCity} required />
-                    </FormGroup>
-                    </div>
-                    <div>
-                    <FormGroup>
-                        <Label>
-                        Do you a return ride as well?</Label>
-                        <Input type="checkbox" name="isRideTwoWay" onChange={this.handleChange} checked={this.state.isRideTwoWay}/>
-                    </FormGroup>
-                    </div>
-                    <div>
-                    <FormGroup>
-                        <Label>
-                        Time of Ride</Label>
-                        <Input type="date" name="rideDate" min={this.state.rideDate} onChange={this.updateInput} value={this.state.rideDate} required />
-                        <Input type="time" name="rideTime" onChange={this.updateInput} value={this.state.rideTime} required />
-                    </FormGroup>
-                    </div>
-                    {
-                        this.state.isRideTwoWay ?
-                        <div>
-                            <FormGroup><Label>
-                            Return Ride Details</Label>
-                            <Input type="date" name="returnDate" min={this.state.rideDate} onChange={this.updateInput} value={this.state.returnDate} required />
-                            <Input type="time" name="returnTime" onChange={this.updateInput} value={this.state.returnTime} required />
-                            </FormGroup>
-                        </div>
-                        : null
-                    }
-                    <FormGroup>
-                        <Button type="submit" color="primary">Request Ride</Button>
-                    </FormGroup>
+                <div className="row">
+                    <h1>Enter Ride Details</h1>  
                 </div>
-            </Form>
+                <hr style={{width:'15%', margin:'50px 0px 50px 0px'}} />
+
+                <div className="row">
+                    <Form onSubmit={this.sendRequest}>
+                        
+                        <h4>Pickup Details</h4>
+                        
+                        <FormGroup>
+                            <Label>Address</Label>
+                            <Input type="text" name="pickupAddress" placeholder="Address" onChange={this.updateInput} value={this.state.pickupAddress} required />
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label>City</Label>
+                            <Input type="text" name="pickupCity" placeholder="City" onChange={this.updateInput} value={this.state.pickupCity} required />
+                        </FormGroup>
+                        
+                        <h4>Destination Detail</h4>
+                        
+                        <FormGroup>
+                            <Label>Address</Label>
+                            <Input type="text" name="destAddress" placeholder="Address" onChange={this.updateInput} value={this.state.destAddress} required />
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label>City</Label>
+                            <Input type="text" name="destCity" placeholder="City" onChange={this.updateInput} value={this.state.destCity} required />
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label>
+                            Do you need a return ride as well?</Label>
+                            <Input type="checkbox" name="isRideTwoWay" onChange={this.handleChange} checked={this.state.isRideTwoWay} style={{marginLeft:'5px'}}/>
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label>Date of Ride</Label>
+                            <Input type="date" name="rideDate" min={this.state.rideDate} onChange={this.updateInput} value={this.state.rideDate} required />
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label>Time of Ride</Label>
+                            <Input type="time" name="rideTime" onChange={this.updateInput} value={this.state.rideTime} required />
+                        </FormGroup>
+                        
+                        {
+                            this.state.isRideTwoWay ?
+                            
+                                <FormGroup>
+                                    <Label>Return Ride Date</Label>
+                                    <Input type="date" name="returnDate" min={this.state.rideDate} onChange={this.updateInput} value={this.state.returnDate} required />
+                                    <Label>Return Ride Time</Label>
+                                    <Input type="time" name="returnTime" onChange={this.updateInput} value={this.state.returnTime} required />
+                                </FormGroup>
+                            
+                            : null
+                        }
+                        <FormGroup>
+                            <Button type="submit" color="primary">Request Ride</Button>
+                        </FormGroup>
+                
+                    </Form>
+                </div>
             </div>
         )
     }

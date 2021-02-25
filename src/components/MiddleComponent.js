@@ -11,8 +11,8 @@ export default class MiddleComponent extends Component {
 
     render() {
         return(
-        <div>
-        <Jumbotron>
+            <div>
+                <Jumbotron>
                     <div className="container">
                         <div className="row row-header">
                             <div className="col-12 col-sm-6">
@@ -21,15 +21,16 @@ export default class MiddleComponent extends Component {
                             </div>
                         </div>
                     </div>
-        </Jumbotron>
-        <RideForms/>  
-        <Switch>
-          <Route path="/findride" component={()=><FindRide rides={this.props.store.rides} findRide={this.props.store.findRide} />} />
-          <Route path="/postride" component={()=><PostRide postRide={this.props.store.postRide}/>} />
-          <Route path="/requestride" component={()=><RideRequest autoRide={this.props.store.autoRide} autoRideRequest={this.props.store.autoRideRequest}/>} />
-        </Switch>
-        <Ride rides={this.props.store.rides} />
-        </div>
+                </Jumbotron>
+                <RideForms/>  
+                <Switch>
+                <Route path="/findride" component={()=><FindRide rides={this.props.store.rides} findRide={this.props.store.findRide} />} />
+                <Route path="/postride" component={()=><PostRide postRide={this.props.store.postRide}/>} />
+                <Route path="/requestride" component={()=><RideRequest autoRide={this.props.store.autoRide} autoRideRequest={this.props.store.autoRideRequest}/>} />
+                </Switch>
+                <div><br/><br/></div>
+                <Ride rides={this.props.store.rides} />
+            </div>
         )
     }
 

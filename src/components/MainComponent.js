@@ -3,7 +3,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide, fetchUserProfile } from '../redux/ActionCreators';
+import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide, fetchUserProfile, setupLocalstorage } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UserProfile from './userProfileComponent'
@@ -28,18 +28,27 @@ const mapDispatchToProps = (dispatch) => ({
   findRide: (data) => dispatch(findRide(data)),
   postRide: (data) => dispatch(postRide(data)),
   autoRideRequest: (data) => dispatch(autoRide(data)),
-  fetchUserProfile: (data) => dispatch(fetchUserProfile(data))
+  fetchUserProfile: (data) => dispatch(fetchUserProfile(data)),
+  setupLocalstorage: (user) => dispatch(setupLocalstorage(user))
 });
 
 
 class Main extends Component {
+  
+  refreshToken=()=> {
+    var user = JSON.parse(localStorage.getItem('user'));
 
-  componentDidMount() {
-    
+    if (user) {
+      console.log(user)
+      this.props.setupLocalstorage(user)
+    }
+    else {
+      console.log(user)
+    }
   }
 
-  componentWillUnmount() {
-    this.props.logoutUser();
+  componentDidMount() {
+    this.refreshToken()
   }
 
   returnHeaderStore = () => {
@@ -94,12 +103,14 @@ class Main extends Component {
         <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserProfileStore()}/>} />
         <Route exact path="/login" component={()=><LoginComponent store={this.returnUserStore()}/> } />
         <Route path="/" component={()=><MiddleComponent store={this.returnMiddleStore()}/>} />
+       
+        
         </Switch>
         
         <Footer />
       </div>
     );
-  }
+  } 
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
