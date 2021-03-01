@@ -3,7 +3,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide, fetchUserProfile } from '../redux/ActionCreators';
+import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, autoRide, fetchUserProfile, updateUserProfile } from '../redux/ActionCreators';
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import UserProfile from './userProfileComponent'
@@ -28,7 +28,8 @@ const mapDispatchToProps = (dispatch) => ({
   findRide: (data) => dispatch(findRide(data)),
   postRide: (data) => dispatch(postRide(data)),
   autoRideRequest: (data) => dispatch(autoRide(data)),
-  fetchUserProfile: (data) => dispatch(fetchUserProfile(data))
+  fetchUserProfile: (data) => dispatch(fetchUserProfile(data)),
+  updateUserProfile: (data) => dispatch(updateUserProfile(data))
 });
 
 
@@ -78,7 +79,8 @@ class Main extends Component {
     const store = {
       auth: this.props.auth,
       userProfile: this.props.userProfile,
-      fetchUserProfile: this.props.fetchUserProfile
+      fetchUserProfile: this.props.fetchUserProfile,
+      updateUserProfile: this.props.updateUserProfile
     }
 
     return store

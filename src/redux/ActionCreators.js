@@ -35,6 +35,7 @@ export const loginUser = (creds) => (dispatch) => {
         localStorage.setItem('user', JSON.stringify(user));
         // Dispatch the success action
         dispatch(receiveLogin(user));
+        dispatch(fetchUserProfile(user.uid))
     })
     .catch(error => dispatch(loginError(error.message)))
 };
@@ -80,6 +81,7 @@ export const signupUser = (creds) => (dispatch) => {
             signUpDate: user.metadata.creationTime
         }
         dispatch(registerUser(userEmail));
+        dispatch(fetchUserProfile(user.uid))
     })
     .catch(error => dispatch(signupError(error.message)))
 };
@@ -135,6 +137,7 @@ export const googleLogin = () => (dispatch) => {
                 signUpDate: user.metadata.creationTime
             }
             dispatch(registerUser(userEmail));
+            dispatch(fetchUserProfile(user.uid))
         })
         .catch((error) => {
             dispatch(loginError(error.message));
@@ -210,12 +213,12 @@ export const failureAutoRide = (err) => {
 export const autoRide = (ride) => (dispatch) => {
         dispatch(requestAutoRide)
         
-        const ridetime = dateToFirebaseTimeStamp(ride.rideDetail.rideDate, ride.rideDetail.rideTime)
-        const endtime = ride.rideDetail.isRideTwoWay 
+        let ridetime = dateToFirebaseTimeStamp(ride.rideDetail.rideDate, ride.rideDetail.rideTime)
+        let endtime = ride.rideDetail.isRideTwoWay 
                         ?  dateToFirebaseTimeStamp(ride.rideDetail.endDate, ride.rideDetail.endTime) 
                         : null
 
-        const rideDetails = {
+        let rideDetails = {
             pickUp: {
                 Address: ride.rideDetail.pickupAddress,
                 City: ride.rideDetail.pickupCity
@@ -241,16 +244,15 @@ export const autoRide = (ride) => (dispatch) => {
         )
 }
 
-const dateToFirebaseTimeStamp = (fulldate, time) => {
-    const d = fulldate.split("-")
-    const year = d[0]
-    const month = parseInt(d[1]) - 1
-    const date = d[2]
+const dateToFirebaseTimeStamp = (fulldate, time = "00:00:00") => {
+    let dateSplit = fulldate.split("-")
+    let year = dateSplit[0]
+    let month = parseInt(dateSplit[1]) - 1
+    let date = dateSplit[2]
 
-
-    const t = time.split(":")
-    const hour = t[0]
-    const minute = t[1]
+    let timeSplit = time.split(":")
+    let hour = timeSplit[0]
+    let minute = timeSplit[1]
 
     return firebase.firestore.Timestamp.fromDate(new Date(year, month, date, hour, minute))
 }
@@ -265,21 +267,21 @@ export const requestUserProfile = () => {
 export const successUserProfile = (userProfile) => {
     return{
         type: ActionTypes.FETCH_USER_PROFILE_SUCCESS,
-        userProfile: userProfile
+        payload: userProfile
     }
 }
 
 export const failureUserProfile = (err) => {
     return{
         type: ActionTypes.FETCH_USER_PROFILE_FAILURE,
-        err: err
+        payload: err
     }
 }
 
 export const fetchUserProfile = (userUID) => (dispatch) => {
     dispatch(requestUserProfile())
 
-    /*firestore
+    firestore
     .collection('users')
     .doc(userUID)
     .get()
@@ -287,8 +289,7 @@ export const fetchUserProfile = (userUID) => (dispatch) => {
         (doc) => {
             if(doc.exists){
                 let data = doc.data()
-                dispatch(successUserProfile(data))
-                return data       
+                dispatch(successUserProfile(data))      
             }
             else{
                 dispatch(failureUserProfile("No such Document exists."))
@@ -297,8 +298,7 @@ export const fetchUserProfile = (userUID) => (dispatch) => {
     )
     .catch(err => {
         dispatch(failureUserProfile(err))
-    })*/
-    console.log(userUID)
+    })
 }
 
 /****************************** Updating User Profile Actions ******************************/
@@ -311,20 +311,30 @@ export const requestUpdateUserProfile = () => {
 export const successUpdateUserProfile = (msg) => {
     return{
         type: ActionTypes.UPDATE_USER_PROFILE_SUCCESS,
-        msg: msg
+        payload: "Your Profile Updated Successfully."
     }
 }
 
 export const failureUpdateUserProfile = (err) => {
     return{
         type: ActionTypes.UPDATE_USER_PROFILE_FAILURE,
-        err: err
+        payload: err
     }
 }
 
-export const UpdateUserProfile = (userUID, userProfile) => (dispatch) => {
+export const updateUserProfile = (data) => (dispatch) => {
     dispatch(requestUpdateUserProfile())
     
+    let userUID = data.userUID
+    let userProfile = data.userProfile
+
+    userProfile.birhtDate 
+    ? userProfile = {
+        ...userProfile,
+        birthDate: dateToFirebaseTimeStamp(userProfile.birthDate)
+    }
+    :
+
     firestore
     .collection('users')
     .doc(userUID)
