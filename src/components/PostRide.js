@@ -1,48 +1,31 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input,Button, Label } from 'reactstrap';
+import { getDateN } from '../extraFunctionalities/extraFunctionalities'
 //import { Link } from 'react-router-dom';
 //import { Control, Form, Errors } from 'react-redux-form';
-import google from 'google'
 
 class PostRide extends Component {
 
     constructor(props) {
         super(props);
 
-        const tomorrowDate = this.tomorrowDate();
-
         this.state = {
             src: "",
             dst: "",
-            rideDate: tomorrowDate,
+            rideDate: getDateN(1),
             rideTime: "06:00"
         }
     }
 
-    tomorrowDate = () => {
-        const tomorrow = new Date()
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrow_date = tomorrow.getFullYear() + "-" + this.padZero(parseInt(tomorrow.getMonth())+1) + "-" + this.padZero(tomorrow.getDate())
-        return tomorrow_date
-    }
-
-    padZero = e => {
-        const remainder = parseInt(parseInt(e) / 10)
-        if(remainder !== 0) return e
-        else return "0"+e
-    }
-
     handleSubmit = (event) => {
         
-        this.props.postRide(this.state);
-        event.preventDefault();
-
-        const tomorrowDate = this.tomorrowDate()
+        this.props.postRide(this.state)
+        event.preventDefault()
         
         this.setState({
             src: "",
             dst: "",
-            rideDate: tomorrowDate,
+            rideDate: getDateN(1),
             rideTime: "06:00"
         })
     }

@@ -4,7 +4,8 @@ import {
     FETCH_USER_PROFILE_FAILURE,
     UPDATE_USER_PROFILE_REQUEST,
     UPDATE_USER_PROFILE_SUCCESS,
-    UPDATE_USER_PROFILE_FAILURE
+    UPDATE_USER_PROFILE_FAILURE,
+    CLEAR_USER_PROFILE_STORE
 } from './ActionTypes'
 
 const initialState = {
@@ -19,8 +20,9 @@ export const UserProfile = (state = initialState, action) => {
         case FETCH_USER_PROFILE_SUCCESS: return {isLoading: false, userProfile: action.payload, msg: null}
         case FETCH_USER_PROFILE_FAILURE: return {isLoading: false, userProfile: null, msg: action.payload}
         case UPDATE_USER_PROFILE_REQUEST: return {...state, isLoading: true, msg: null}
-        case UPDATE_USER_PROFILE_SUCCESS: return {...state, isLoading: false, msg: action.payload}
+        case UPDATE_USER_PROFILE_SUCCESS: return {isLoading: false, userProfile: {...state.userProfile, ...action.payload}, msg: null}
         case UPDATE_USER_PROFILE_FAILURE: return {...state, isLoading: false, msg: action.payload}
+        case CLEAR_USER_PROFILE_STORE: return initialState
         default: return state;
     }
 }

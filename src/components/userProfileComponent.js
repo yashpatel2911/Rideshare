@@ -1,16 +1,20 @@
 import { Component } from 'react'
 import { Label, Input, FormGroup, Button } from 'reactstrap'
-import { todayDate, firebaseTimeStampToDate, changedValues } from '../extraFunctionalities/extraFunctionalities'
+import { withRouter } from 'react-router-dom'
+import { getDateN, firebaseTimeStampToDate, changedValues, checkUserlogin } from '../extraFunctionalities/extraFunctionalities'
 
 class UserProfile extends Component {
 
     constructor(props){
         super(props)
 
-        //if(this.checkUserLogin(this.props.store.auth.user)) this.redirectPage()
+        if(checkUserlogin(this.props.store.auth.user)){
+            this.redirectPage()
+            return
+        }
         //const user = this.props.store.auth.user
         let userProfile = this.props.store.userProfile.userProfile
-        
+
         this.initialState = {
             displayName: userProfile.displayName ? userProfile.displayName : "",
             email: userProfile.email,
@@ -47,9 +51,6 @@ class UserProfile extends Component {
         })
     }
 
-    checkUserLogin = user => {
-    }
-
     redirectPage = () => {
         this.props.history.push('/login?url=updateProfile')
     }
@@ -79,6 +80,10 @@ class UserProfile extends Component {
     }
 
     render() {
+        if(checkUserlogin(this.props.store.auth.user)){
+            this.redirectPage()
+            return null
+        }
         return(
             <div>
                 <form onSubmit={this.handleForm}>
@@ -99,7 +104,7 @@ class UserProfile extends Component {
                             <div><Input type="text" name="postalCode" value={this.state.homeAddress.postalCode} onChange={this.updateLocation} maxLength="6" minLength="6" required/></div>
                         </FormGroup>
                         <div><Label>Date</Label></div>
-                        <div><Input type="date" name="birthDate" value={this.state.birthDate} onChange={this.updateInput} max={todayDate()} required/></div>
+                        <div><Input type="date" name="birthDate" value={this.state.birthDate} onChange={this.updateInput} max={getDateN()} required/></div>
                         <FormGroup>
                             <div><Label>Gender</Label></div>
                             <div>
@@ -121,4 +126,4 @@ class UserProfile extends Component {
 
 }
 
-export default UserProfile
+export default withRouter(UserProfile)
