@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { Form, FormGroup, Input,Button, Label } from 'reactstrap';
+import { getDateN } from '../extraFunctionalities/extraFunctionalities'
 
 class RideRequest extends Component {
 
     constructor(props){
         super(props)
-
-        const tomorrowDate = this.tomorrowDate()
 
         this.state = {
             pickupAddress: "",
@@ -14,24 +13,11 @@ class RideRequest extends Component {
             destAddress: "",
             destCity: "",
             isRideTwoWay: false,
-            rideDate: tomorrowDate,
+            rideDate: getDateN(1),
             rideTime: "06:00",
-            returnDate: tomorrowDate,
+            returnDate: getDateN(1),
             returnTime: "06:00"
         }
-    }
-
-    tomorrowDate = () => {
-        const tomorrow = new Date()
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrow_date = tomorrow.getFullYear() + "-" + this.padZero(parseInt(tomorrow.getMonth())+1) + "-" + this.padZero(tomorrow.getDate())
-        return tomorrow_date
-    }
-
-    padZero = e => {
-        const remainder = parseInt(parseInt(e) / 10)
-        if(remainder !== 0) return e
-        else return "0"+e
     }
 
     updateInput = e => {
@@ -52,8 +38,6 @@ class RideRequest extends Component {
         // Inserting the request into database
         this.props.autoRideRequest({ rideDetail:this.state })
 
-        const tomorrowDate = this.tomorrowDate()
-
         // Setting back to the original state
         this.setState({
             pickupAddress: "",
@@ -61,9 +45,9 @@ class RideRequest extends Component {
             destAddress: "",
             destCity: "",
             isRideTwoWay: false,
-            rideDate: tomorrowDate,
+            rideDate: getDateN(1),
             rideTime: "06:00",
-            returnDate: tomorrowDate,
+            returnDate: getDateN(1),
             returnTime: "06:00"
         })
     }

@@ -1,5 +1,8 @@
-export const todayDate = () => {
-    return dateToString(new Date())
+export const getDateN = (N = 0) => {
+    var dateN = new Date()
+    dateN.setDate(dateN.getDate() + N)
+
+    return dateToString(dateN)
 }
 
 const padZero = e => {
@@ -64,4 +67,8 @@ const compare = (item1, item2) => {
     }
 
     return change
+}
+
+export const checkUserlogin = (user) => {
+    return user ===null ? true : false
 }

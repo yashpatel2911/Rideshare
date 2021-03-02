@@ -121,8 +121,8 @@ export const logoutUser = () => (dispatch) => {
         // An error happened.
       });
     localStorage.removeItem('user');
-    
     dispatch(receiveLogout())
+    dispatch(clearUserProfileStore())
 }
 
 /*****************************  User Google login Action *******************************************************/
@@ -316,10 +316,10 @@ export const requestUpdateUserProfile = () => {
     }
 }
 
-export const successUpdateUserProfile = (msg) => {
+export const successUpdateUserProfile = (userDetails) => {
     return{
         type: ActionTypes.UPDATE_USER_PROFILE_SUCCESS,
-        payload: "Your Profile Updated Successfully."
+        payload: userDetails
     }
 }
 
@@ -327,6 +327,12 @@ export const failureUpdateUserProfile = (err) => {
     return{
         type: ActionTypes.UPDATE_USER_PROFILE_FAILURE,
         payload: err
+    }
+}
+
+export const clearUserProfileStore = () => {
+    return{
+        type: ActionTypes.CLEAR_USER_PROFILE_STORE
     }
 }
 
@@ -347,7 +353,12 @@ export const updateUserProfile = (data) => (dispatch) => {
     .collection('users')
     .doc(userUID)
     .update(userProfile)
-    .then(dispatch(successUpdateUserProfile("Successfully updated your profile")))
+    .then(
+        () => {
+            dispatch(successUpdateUserProfile(userProfile))
+            alert('Successfully updated your profile')
+            }
+    )
     .catch(err => {
         dispatch(failureUpdateUserProfile(err))
     })
