@@ -1,12 +1,19 @@
 import { Component } from 'react'
-import { withRouter, useParams } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import { checkUserlogin } from '../extraFunctionalities/extraFunctionalities'
+import queryString from 'querystring'
 
 class LoginComponent extends Component{
 
     constructor(props){
         super(props)
 
-        if(this.checkUserLogin(this.props.auth.user)) this.redirectPage(this.props.path)
+        let params = queryString.parse(this.props.location.search)
+        
+        if(!checkUserlogin(this.props.store.auth.user)){
+            this.redirectPage(params['?url'])
+            return
+        }
 
         this.state={
             email:"",
@@ -14,12 +21,7 @@ class LoginComponent extends Component{
         }
     }
 
-    checkUserLogin = user => {
-        if(user === null) return false
-        else return true
-    }
-
-    redirectPage = path => {
+    redirectPage = (path = "/") => {
         this.props.history.push(path)
     }
 
@@ -34,6 +36,10 @@ class LoginComponent extends Component{
     }
 
     render(){
+        if(!checkUserlogin(this.props.store.auth.user)){
+            return null
+        }
+
         return(
             <form onSubmit={this.handleLoginForm}>
                 <label for='username'>
