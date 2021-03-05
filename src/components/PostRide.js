@@ -36,10 +36,6 @@ class PostRide extends Component {
         })
     }
 
-    
-
-    
-
     render() {
         return(
             <div className="container">

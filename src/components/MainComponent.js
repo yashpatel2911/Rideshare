@@ -35,21 +35,20 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 class Main extends Component {
-  
+
+  componentDidMount() {
+    this.refreshToken()
+  }
+
   refreshToken=()=> {
     var user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
-      console.log(user)
       this.props.setupLocalstorage(user)
     }
     else {
-      console.log(user)
+      console.log("User Not Exist!!")
     }
-  }
-
-  componentDidMount() {
-    this.refreshToken()
   }
 
   returnHeaderStore = () => {
