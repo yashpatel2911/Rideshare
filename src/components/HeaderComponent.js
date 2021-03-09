@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
     Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
+import { isObjectNull } from '../extraFunctionalities/extraFunctionalities'
 
 class Header extends Component {
 
@@ -17,6 +18,23 @@ class Header extends Component {
             isSignupModelOpen: false,
             isPasswordMatch: true
         };
+    }
+
+    getDisplayName = () => {
+        let DisplayName = ""
+
+        if(!isObjectNull(this.props.store.auth.user)){
+            if(!isObjectNull(this.props.store.auth.user.displayName)){
+                DisplayName = this.props.store.auth.user.displayName
+            }
+            else if(!isObjectNull(this.props.store.userProfile.userProfile)){
+                if(!isObjectNull(this.props.store.userProfile.userProfile.displayName)){
+                    DisplayName = this.props.store.userProfile.userProfile.displayName
+                }
+            }
+        }
+
+        return DisplayName
     }
 
     toggleNav = () => {
@@ -74,7 +92,6 @@ class Header extends Component {
     handleGoogleSignup = (event) => {
         this.toggleSignupModal();
         this.props.store.googleLogin();
-        
         event.preventDefault();
     }
 
@@ -125,7 +142,7 @@ class Header extends Component {
                                         </Button>
                                         :
                                         <div>
-                                        <div className="navbar-text mr-3">{this.props.store.auth.user.displayName}</div>
+                                        <div className="navbar-text mr-3">{this.getDisplayName()}</div>
                                         <Button outline onClick={this.handleUpdateProfile}>
                                         <span className="fa fa-sign-out fa-lg"></span> Update Profile
                                         </Button>

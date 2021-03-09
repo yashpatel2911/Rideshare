@@ -62,7 +62,6 @@ export const Auth = (state = {
             return {...state,
                 isLoading: false,
                 isAuthenticated: true,
-                
                 user: action.user
             };
         default:

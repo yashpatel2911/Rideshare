@@ -1,6 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { auth, firestore, fireauth } from '../firebase/firebase';
-import firebase from 'firebase';
+import { dateToFirebaseTimeStamp, authUserToCustomUserDetails } from '../extraFunctionalities/extraFunctionalities'
 
 
 /*****************************  User Login Actions *******************************************************/
@@ -36,15 +36,21 @@ export const loginUser = (creds) => (dispatch) => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin())
 
-    return auth.signInWithEmailAndPassword(creds.email, creds.password)
+    auth.signInWithEmailAndPassword(creds.email, creds.password)
     .then(() => {
-        var user = auth.currentUser;
+        var user = authUserToCustomUserDetails(auth.currentUser);
+
         localStorage.setItem('user', JSON.stringify(user));
         // Dispatch the success action
         dispatch(receiveLogin(user));
         dispatch(fetchUserProfile(user.uid))
+        
     })
-    .catch(error => dispatch(loginError(error.message)))
+    .catch(
+        (error) => {
+            dispatch(loginError(error.message))
+        }
+    )
 };
 
 /*****************************  User SignUp Actions *******************************************************/
@@ -73,18 +79,19 @@ export const signupUser = (creds) => (dispatch) => {
     // We dispatch requestSignup to kickoff the call to the API
     dispatch(requestSignup(creds))
 
-    return auth.createUserWithEmailAndPassword(creds.email, creds.password)
+    auth.createUserWithEmailAndPassword(creds.email, creds.password)
     .then(() => {
-        var user = auth.currentUser;
+        var user = authUserToCustomUserDetails(auth.currentUser);
         localStorage.setItem('user', JSON.stringify(user));
         // Dispatch the success action
         dispatch(receiveSignup(user));
+        
         var userEmail = {
             email: user.email,
             name: user.displayName,
             id: user.uid,
             phoneNumber: user.phoneNumber,
-            signUpDate: user.metadata.creationTime
+            signUpDate: auth.currentUser.metadata.creationTime
         }
         dispatch(registerUser(userEmail));
         dispatch(fetchUserProfile(user.uid))
@@ -92,9 +99,24 @@ export const signupUser = (creds) => (dispatch) => {
     .catch(error => dispatch(signupError(error.message)))
 };
 
-export const registerUser = (user) => (dispatch) => {
-    return firestore.collection('users').doc(user.id).set(user)
-        .then();
+const registerUser = (user) => {
+
+    firestore
+    .collection('users')
+    .doc(user.id)
+    .get()
+    .then(
+        (doc) => {
+            if(!doc.exists){
+                firestore.collection('users').doc(user.id).set(user).catch((err) => {alert(err)})
+            }
+        }
+    )
+    .catch(
+        (err) => {
+            alert(err)
+        }
+    )
 }
 
 /*****************************  User Logout Actions *******************************************************/
@@ -127,11 +149,13 @@ export const logoutUser = () => (dispatch) => {
 /*****************************  User Google login Action *******************************************************/
 
 export const googleLogin = () => (dispatch) => {
+    dispatch(requestLogin())
     const provider = new fireauth.GoogleAuthProvider();
 
     auth.signInWithPopup(provider)
         .then((result) => {
-            var user = result.user;
+            console.log(result.user)
+            var user = authUserToCustomUserDetails(result.user);
             localStorage.setItem('user', JSON.stringify(user));
             
             // Dispatch the success action
@@ -141,9 +165,9 @@ export const googleLogin = () => (dispatch) => {
                 name: user.displayName,
                 id: user.uid,
                 phoneNumber: user.phoneNumber,
-                signUpDate: user.metadata.creationTime
+                signUpDate: result.user.metadata.creationTime
             }
-            dispatch(registerUser(userEmail));
+            registerUser(userEmail)
             dispatch(fetchUserProfile(user.uid))
         })
         .catch((error) => {
@@ -190,7 +214,7 @@ export const fetchRideFailed = (errmess) => ({
 
 export const postRide = (data) => (dispatch) => {
         
-    return firestore.collection('rides').add(data)
+    firestore.collection('rides').add(data)
     .then(response => { console.log('Rides', response); alert('Your ride has been successfully posted!'); })
     .catch(error =>  { console.log('Rides', error.message); alert('Your feedback could not be posted\nError: '+error.message); });
 };
@@ -249,19 +273,6 @@ export const autoRide = (ride) => (dispatch) => {
                 dispatch(failureAutoRide(error))
             }
         )
-}
-
-const dateToFirebaseTimeStamp = (fulldate, time = "00:00:00") => {
-    let dateSplit = fulldate.split("-")
-    let year = dateSplit[0]
-    let month = parseInt(dateSplit[1]) - 1
-    let date = dateSplit[2]
-
-    let timeSplit = time.split(":")
-    let hour = timeSplit[0]
-    let minute = timeSplit[1]
-
-    return firebase.firestore.Timestamp.fromDate(new Date(year, month, date, hour, minute))
 }
 
 /****************************** Fetching User Profile Actions ******************************/

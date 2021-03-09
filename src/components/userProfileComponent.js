@@ -1,14 +1,14 @@
 import { Component } from 'react'
 import { Label, Input, FormGroup, Button } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
-import { getDateN, firebaseTimeStampToDate, changedValues, checkUserlogin } from '../extraFunctionalities/extraFunctionalities'
+import { getDateN, firebaseTimeStampToDate, changedValues, isObjectNull } from '../extraFunctionalities/extraFunctionalities'
 
 class UserProfile extends Component {
 
     constructor(props){
         super(props)
 
-        if(checkUserlogin(this.props.store.auth.user)){
+        if(isObjectNull(this.props.store.auth.user) && isObjectNull(this.props.store.userProfile.userProfile)){
             this.redirectPage()
             return
         }
@@ -80,7 +80,7 @@ class UserProfile extends Component {
     }
 
     render() {
-        if(checkUserlogin(this.props.store.auth.user)){
+        if(isObjectNull(this.props.store.auth.user) && isObjectNull(this.props.store.userProfile.userProfile)){
             this.redirectPage()
             return null
         }

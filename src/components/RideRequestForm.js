@@ -88,12 +88,6 @@ class RideRequest extends Component {
                         </FormGroup>
                         
                         <FormGroup>
-                            <Label>
-                            Do you need a return ride as well?</Label>
-                            <Input type="checkbox" name="isRideTwoWay" onChange={this.handleChange} checked={this.state.isRideTwoWay} style={{marginLeft:'5px'}}/>
-                        </FormGroup>
-                        
-                        <FormGroup>
                             <Label>Date of Ride</Label>
                             <Input type="date" name="rideDate" min={this.state.rideDate} onChange={this.updateInput} value={this.state.rideDate} required />
                         </FormGroup>
@@ -102,11 +96,18 @@ class RideRequest extends Component {
                             <Label>Time of Ride</Label>
                             <Input type="time" name="rideTime" onChange={this.updateInput} value={this.state.rideTime} required />
                         </FormGroup>
+
+                        <FormGroup>
+                            <Label>
+                            Do you need a return ride as well?</Label>
+                            <Input type="checkbox" name="isRideTwoWay" onChange={this.handleChange} checked={this.state.isRideTwoWay} style={{marginLeft:'5px'}}/>
+                        </FormGroup>
                         
                         {
                             this.state.isRideTwoWay ?
                             
                                 <FormGroup>
+                                    <h4>Return Ride Details</h4>
                                     <Label>Return Ride Date</Label>
                                     <Input type="date" name="returnDate" min={this.state.rideDate} onChange={this.updateInput} value={this.state.returnDate} required />
                                     <Label>Return Ride Time</Label>
