@@ -51,11 +51,7 @@ class Main extends Component {
       console.log("User Not Exist!!")
     }
   }
-
-  componentDidMount() {
-    this.refreshToken()
-  }
-
+  
   returnLoginLogoutStore = () => {
     const store = {
       auth: this.props.auth,
