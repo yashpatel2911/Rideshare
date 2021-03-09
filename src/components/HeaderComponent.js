@@ -82,7 +82,15 @@ class Header extends Component {
     }
 
     handleGoogleLogin = (event) => {
+        
+        this.props.store.googleLogin();
         this.toggleLoginModal();
+        
+        event.preventDefault();
+    }
+
+    handleGoogleSignup = (event) => {
+        this.toggleSignupModal();
         this.props.store.googleLogin();
         event.preventDefault();
     }
@@ -217,7 +225,7 @@ class Header extends Component {
                             <Button type="submit" value="submit" color="primary">SignUp</Button>
                         </Form>
                         <p>------------------------------------OR---------------------------------</p>
-                        <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Signup with Google</Button>
+                        <Button color="danger" onClick={this.handleGoogleSignup}><span className="fa fa-google fa-lg"></span> Signup with Google</Button>
                     </ModalBody>
                 </Modal>
             </React.Fragment>

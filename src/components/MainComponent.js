@@ -35,7 +35,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 class Main extends Component {
-  
+
+  componentDidMount() {
+    this.refreshToken()
+  }
+
   refreshToken=()=> {
     var user = JSON.parse(localStorage.getItem('user'));
 
@@ -44,7 +48,7 @@ class Main extends Component {
       this.props.fetchUserProfile(user.uid)
     }
     else {
-      console.log(user)
+      console.log("User Not Exist!!")
     }
   }
 
