@@ -40,8 +40,8 @@ class Main extends Component {
     var user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
-      console.log(user)
       this.props.setupLocalstorage(user)
+      this.props.fetchUserProfile(user.uid)
     }
     else {
       console.log(user)
@@ -52,9 +52,10 @@ class Main extends Component {
     this.refreshToken()
   }
 
-  returnHeaderStore = () => {
+  returnLoginLogoutStore = () => {
     const store = {
-      auth: this.props.auth, 
+      auth: this.props.auth,
+      userProfile: this.props.userProfile, 
       signupUser: this.props.signupUser,
       loginUser: this.props.loginUser,
       logoutUser: this.props.logoutUser,
@@ -76,14 +77,6 @@ class Main extends Component {
     return store
   }
 
-  returnUserStore = () => {
-    const store = {
-      auth: this.props.auth
-    }
-    
-    return store
-  }
-
   returnUserProfileStore = () => {
     const store = {
       auth: this.props.auth,
@@ -99,14 +92,12 @@ class Main extends Component {
 
     return (
       <div>
-        <Header store={this.returnHeaderStore()}/>
+        <Header store={this.returnLoginLogoutStore()}/>
 
         <Switch>
         <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserProfileStore()}/>} />
-        <Route exact path="/login" component={()=><LoginComponent store={this.returnUserStore()}/> } />
+        <Route exact path="/login" component={()=><LoginComponent store={this.returnLoginLogoutStore()}/> } />
         <Route path="/" component={()=><MiddleComponent store={this.returnMiddleStore()}/>} />
-       
-        
         </Switch>
         
         <Footer />

@@ -1,24 +1,30 @@
 import { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { checkUserlogin } from '../extraFunctionalities/extraFunctionalities'
+import { isObjectNull } from '../extraFunctionalities/extraFunctionalities'
 import queryString from 'querystring'
+import { Form, FormGroup, Label, Button, Input } from 'reactstrap'
 
 class LoginComponent extends Component{
 
     constructor(props){
         super(props)
 
-        let params = queryString.parse(this.props.location.search)
-        
-        if(!checkUserlogin(this.props.store.auth.user)){
-            this.redirectPage(params['?url'])
+        let nextURL = queryString.parse(this.props.location.search)['?url']
+
+        if(this.checkUserLogin()){
+            this.redirectPage(nextURL)
             return
         }
 
         this.state={
             email:"",
-            password:""
+            password:"",
+            nextURL: nextURL
         }
+    }
+
+    checkUserLogin = () => {
+        return !isObjectNull(this.props.store.auth.user) && !isObjectNull(this.props.store.userProfile.userProfile)
     }
 
     redirectPage = (path = "/") => {
@@ -33,25 +39,32 @@ class LoginComponent extends Component{
 
     handleLoginForm = e => {
         e.preventDefault();
+        this.props.store.loginUser({email: this.state.email, password: this.state.password})
+    }
+
+    handleGoogleLogin = (e) => {
+        e.preventDefault()
+        this.props.store.googleLogin()
     }
 
     render(){
-        if(!checkUserlogin(this.props.store.auth.user)){
+        if(this.checkUserLogin()){
             return null
         }
-
         return(
-            <form onSubmit={this.handleLoginForm}>
-                <label for='username'>
-                    Username
-                </label>
-                <input type='email' name='email' placeholder='abc@xyz.com'/>
-                <label for='password'>
-                    Password
-                </label>
-                <input type='password' name='password' placeholder='Enter your password here.'/>
-                <button type='submit'>Login</button>
-            </form>
+            <Form onSubmit={this.handleLoginForm}>
+                <FormGroup><Label>Email</Label>
+                <Input type='email' name='email' placeholder='abc@xyz.com' onChange={this.updateInput} />
+                </FormGroup>
+                <FormGroup><Label>Password</Label>
+                <Input type='password' name='password' placeholder='Enter your password here.' onChange={this.updateInput}/>
+                </FormGroup>
+                <FormGroup>
+                <Button type='submit'>Login</Button>
+                <p>------------------------------------OR---------------------------------</p>
+                        <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
+                </FormGroup>
+            </Form>
         )
     }
 
