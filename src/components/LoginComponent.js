@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { isObjectNull } from '../extraFunctionalities/extraFunctionalities'
+import { isUserLoggedIn, redirectPage } from '../extraFunctionalities/extraFunctionalities'
 import queryString from 'querystring'
 import { Form, FormGroup, Label, Button, Input } from 'reactstrap'
 
@@ -11,8 +11,8 @@ class LoginComponent extends Component{
 
         let nextURL = queryString.parse(this.props.location.search)['?url']
 
-        if(this.checkUserLogin()){
-            this.redirectPage(nextURL)
+        if(isUserLoggedIn(this.props.store)){
+            redirectPage(this.props.history, nextURL)
             return
         }
 
@@ -23,12 +23,8 @@ class LoginComponent extends Component{
         }
     }
 
-    checkUserLogin = () => {
-        return !isObjectNull(this.props.store.auth.user) && !isObjectNull(this.props.store.userProfile.userProfile)
-    }
-
-    redirectPage = (path = "/") => {
-        this.props.history.push(path)
+    handleCreateAccount = () => {
+        redirectPage(this.props.history, '/signup')
     }
 
     updateInput = e => {
@@ -48,10 +44,11 @@ class LoginComponent extends Component{
     }
 
     render(){
-        if(this.checkUserLogin()){
+        if(isUserLoggedIn(this.props.store)){
             return null
         }
         return(
+            <div>
             <Form onSubmit={this.handleLoginForm}>
                 <FormGroup><Label>Email</Label>
                 <Input type='email' name='email' placeholder='abc@xyz.com' onChange={this.updateInput} />
@@ -61,10 +58,12 @@ class LoginComponent extends Component{
                 </FormGroup>
                 <FormGroup>
                 <Button type='submit'>Login</Button>
-                <p>------------------------------------OR---------------------------------</p>
-                        <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
                 </FormGroup>
             </Form>
+            <p>------------------------------------OR---------------------------------</p>
+            <Button color="danger" onClick={this.handleGoogleLogin}><span className="fa fa-google fa-lg"></span> Login with Google</Button>
+            <Button color="danger" onClick={this.handleCreateAccount}>Create an account with us!</Button>
+            </div>
         )
     }
 

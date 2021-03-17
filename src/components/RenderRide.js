@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Card, Button,CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 
     function RenderRide({ ride }) {
@@ -16,9 +16,15 @@ import { Loading } from './LoadingComponent';
 
                     <CardText style={{color:'GrayText'}}> Pickup: {ride.src}</CardText>
                     <CardText style={{color:'GrayText'}}> Dropoff: {ride.dst}</CardText>
+                    <Button type="submit" onClick={(e) => {handleSubmit(e, ride._id)}}>Book</Button>
                 </CardBody>
             </Card>
         );
+    }
+
+    const handleSubmit = (e, rideID) => {
+        e.preventDefault();
+        console.log(rideID)
     }
 
     const Ride = (props) => {
@@ -66,4 +72,4 @@ import { Loading } from './LoadingComponent';
             );
     }
 
-export default Ride;
+export default withRouter(Ride);
