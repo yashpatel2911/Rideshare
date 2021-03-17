@@ -9,6 +9,8 @@ import { loginUser, logoutUser, googleLogin, signupUser, findRide, postRide, aut
 import UserProfile from './userProfileComponent'
 import MiddleComponent from './MiddleComponent';
 import LoginComponent from './LoginComponent';
+import SignUp from './SignupComponent'
+import RideDetails from './RideDetailsComponent';
 
 
 const mapStateToProps = state => {
@@ -45,19 +47,37 @@ class Main extends Component {
 
     if (user) {
       this.props.setupLocalstorage(user)
+      this.props.fetchUserProfile(user.uid)
     }
     else {
       console.log("User Not Exist!!")
     }
   }
 
-  returnHeaderStore = () => {
+  returnUserStore = () => {
     const store = {
-      auth: this.props.auth, 
-      signupUser: this.props.signupUser,
+      auth: this.props.auth,
+      userProfile: this.props.userProfile
+    }
+
+    return store
+  }
+  
+  returnLoginLogoutStore = () => {
+    const store = {
+      ...this.returnUserStore(),
       loginUser: this.props.loginUser,
-      logoutUser: this.props.logoutUser,
       googleLogin: this.props.googleLogin, 
+    }
+
+    return store
+  }
+
+  returnSignupStore = () => {
+    const store = {
+      ...this.returnUserStore(),
+      signupUser: this.props.signupUser,
+      googleLogin: this.props.googleLogin
     }
 
     return store
@@ -75,18 +95,9 @@ class Main extends Component {
     return store
   }
 
-  returnUserStore = () => {
-    const store = {
-      auth: this.props.auth
-    }
-    
-    return store
-  }
-
   returnUserProfileStore = () => {
     const store = {
-      auth: this.props.auth,
-      userProfile: this.props.userProfile,
+      ...this.returnUserStore(),
       fetchUserProfile: this.props.fetchUserProfile,
       updateUserProfile: this.props.updateUserProfile
     }
@@ -98,14 +109,14 @@ class Main extends Component {
 
     return (
       <div>
-        <Header store={this.returnHeaderStore()}/>
+        <Header store={this.returnLoginLogoutStore()}/>
 
         <Switch>
         <Route exact path="/updateProfile" component={()=><UserProfile store={this.returnUserProfileStore()}/>} />
-        <Route exact path="/login" component={()=><LoginComponent store={this.returnUserStore()}/> } />
+        <Route exact path="/login" component={()=><LoginComponent store={this.returnLoginLogoutStore()}/> } />
+        <Route exact path="/rideDetails" component={()=><RideDetails /> } />
+        <Route exact path="/signup" component={()=><SignUp store={this.returnSignupStore()}/> } />
         <Route path="/" component={()=><MiddleComponent store={this.returnMiddleStore()}/>} />
-       
-        
         </Switch>
         
         <Footer />
