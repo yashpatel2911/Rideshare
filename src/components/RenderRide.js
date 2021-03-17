@@ -2,11 +2,28 @@ import React from 'react';
 import { Card, Button,CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { firestore } from '../firebase/firebase';
 
     function RenderRide({ ride }) {
+        let rider = []
+        firestore.collection('users').doc(ride.userID).get().then(
+            (doc) => {
+                if(doc.exists){
+                    let data
+                    data = doc.data()  
+                    rider.push(data)
+                }
+                else {
+                    console.log("error")
+                }
+            }
+        )
+        console.log(rider[0])
+
         return(
             <Card>
                 <CardBody>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}>{}</CardText>
                     <CardText style={{color:'blue', fontWeight:'bold'}}>{ride.src} to {ride.dst}</CardText>
                     
                     <CardText style={{fontWeight:'bold'}}> Leaving: {ride.rideDate} at {ride.rideTime}</CardText>

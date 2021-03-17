@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input,Button, Label } from 'reactstrap';
 import { getDateN } from '../extraFunctionalities/extraFunctionalities'
+import { withRouter } from 'react-router-dom'
+
 //import { Link } from 'react-router-dom';
 //import { Control, Form, Errors } from 'react-redux-form';
 
@@ -13,7 +15,21 @@ class PostRide extends Component {
             src: "",
             dst: "",
             rideDate: getDateN(1),
-            rideTime: "06:00"
+            rideTime: "06:00",
+            userID: ""
+        }
+    }
+
+    componentDidMount() {
+        var user = JSON.parse(localStorage.getItem('user'));
+
+        if (!user){
+            this.props.history.push('/login')
+        }
+        else {
+            this.setState({
+                userID: user.uid
+            })
         }
     }
 
@@ -26,7 +42,7 @@ class PostRide extends Component {
             src: "",
             dst: "",
             rideDate: getDateN(1),
-            rideTime: "06:00"
+            rideTime: "06:00",
         })
     }
 
@@ -84,4 +100,4 @@ class PostRide extends Component {
     }
 }
 
-export default PostRide;
+export default withRouter (PostRide);
