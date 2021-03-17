@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import { withRouter } from 'react-router'
 
 export const getDateN = (N = 0) => {
     var dateN = new Date()
@@ -71,8 +72,8 @@ const compare = (item1, item2) => {
     return change
 }
 
-export const isObjectNull = (user) => {
-    return user === null ? true : false
+export const isObjectNull = (object) => {
+    return object === null ? true : false
 }
 
 export const dateToFirebaseTimeStamp = (fulldate, time = "00:00:00") => {
@@ -100,4 +101,12 @@ export const authUserToCustomUserDetails = (user) => {
         isAnonymous: user.isAnonymous,
         refreshToken: user.refreshToken
     }
+}
+
+export const isUserLoggedIn = (store) => {
+    return !isObjectNull(store.auth.user) && !isObjectNull(store.userProfile.userProfile)
+}
+
+export const redirectPage = (history, path = '/') => {
+    history.push(path)
 }
