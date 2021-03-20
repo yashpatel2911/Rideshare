@@ -4,53 +4,64 @@ import { withRouter } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { firestore } from '../firebase/firebase';
 
-    function RenderRide({ ride }) {
-        let rider = []
-        firestore.collection('users').doc(ride.userID).get().then(
-            (doc) => {
-                if(doc.exists){
-                    let data
-                    data = doc.data()  
-                    rider.push(data)
-                }
-                else {
-                    console.log("error")
-                }
+class RenderRide extends React.Component{
+
+    constructor(props) {
+        super(props)
+
+        this.state={
+            ride: this.props.ride
+        }
+    }
+
+    componentDidMount() {
+        this.props.ride.userRef.get().then(
+            snap => {
+                this.setState({userData: snap.data()})
             }
         )
-        console.log(rider[0])
 
+        console.log(this.state.userData)
+        
+    }
+
+    handleBook = (e, rideID) => {
+        e.preventDefault()
+        this.props.history.push("")
+    }
+
+    render() {
         return(
             <Card>
                 <CardBody>
                     <CardText style={{color:'blue', fontWeight:'bold'}}>{}</CardText>
-                    <CardText style={{color:'blue', fontWeight:'bold'}}>{ride.src} to {ride.dst}</CardText>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}>{this.state.ride.src} to {this.state.ride.dst}</CardText>
                     
-                    <CardText style={{fontWeight:'bold'}}> Leaving: {ride.rideDate} at {ride.rideTime}</CardText>
-                    <CardText style={{fontWeight:'bold'}}> Returning: {ride.rideDate} at {ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> Leaving: {this.state.ride.rideDate} at {this.state.ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> Returning: {this.state.ride.rideDate} at {this.state.ride.rideTime}</CardText>
 
                     <br/>
 
-                    <CardText style={{color:'GrayText'}}> Pickup: {ride.src}</CardText>
-                    <CardText style={{color:'GrayText'}}> Dropoff: {ride.dst}</CardText>
-                    <Button type="submit" onClick={(e) => {handleSubmit(e, ride._id)}}>Book</Button>
+                    <CardText style={{color:'GrayText'}}> Pickup: {this.state.ride.src}</CardText>
+                    <CardText style={{color:'GrayText'}}> Dropoff: {this.state.ride.dst}</CardText>
+                    <Button type="submit" onClick={(e) => {handleBook(e, this.props.history, this.state.ride._id)}}>Book</Button>
                 </CardBody>
             </Card>
-        );
+        )
     }
+}
 
-    const handleSubmit = (e, rideID) => {
-        e.preventDefault();
-        console.log(rideID)
-    }
+const handleBook = (e, history, rideID) => {
+    e.preventDefault()
+    history.push("/rideDetails?rideID="+rideID)
+}
 
     const Ride = (props) => {
-
         const ride = props.rides.rides.map((ride) => {
             return (
                 
                 <div key={ride._id} className="col-12 ">
-                    <RenderRide ride={ride} />
+                    <RenderRide ride={ride} history={props.history}/>
                     <hr style={{width:'15%', margin:'20px 0px 20px 0px'}} />
                 </div>
                 
