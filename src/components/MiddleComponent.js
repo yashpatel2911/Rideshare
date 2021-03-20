@@ -9,6 +9,29 @@ import RideRequest from './RideRequestForm'
 
 export default class MiddleComponent extends Component {
 
+    findRideStore = () => {
+        const store = {
+            rides: this.props.store.rides,
+            findRide: this.props.store.findRide
+        }
+        return store
+    }
+
+    postRideStore = () => {
+        const store = {
+            postRide: this.props.store.postRide,
+        }
+        return store
+    }
+
+    rideRequestStore = () => {
+        const store = {
+            autoRide: this.props.store.autoRide,
+            autoRideRequest: this.props.store.autoRideRequest
+        }
+        return store
+    }
+
     render() {
         return(
             <div>
@@ -24,12 +47,11 @@ export default class MiddleComponent extends Component {
                 </Jumbotron>
                 <RideForms/>  
                 <Switch>
-                <Route path="/findride" component={()=><FindRide rides={this.props.store.rides} findRide={this.props.store.findRide} />} />
-                <Route path="/postride" component={()=><PostRide postRide={this.props.store.postRide}/>} />
-                <Route path="/requestride" component={()=><RideRequest autoRide={this.props.store.autoRide} autoRideRequest={this.props.store.autoRideRequest}/>} />
+                <Route path="/findride" component={()=><FindRide store={this.findRideStore()}/>} />
+                <Route path="/postride" component={()=><PostRide store={this.postRideStore()}/>} />
+                <Route path="/requestride" component={()=><RideRequest store={this.rideRequestStore()}/>} />
                 </Switch>
                 <div><br/><br/></div>
-                <Ride rides={this.props.store.rides} />
             </div>
         )
     }

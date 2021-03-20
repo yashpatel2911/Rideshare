@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import { getDateN } from '../extraFunctionalities/extraFunctionalities'
+import Ride from './RenderRide'
 //import { Link } from 'react-router-dom';
 //import { Control, Form, Errors } from 'react-redux-form';
 
@@ -20,7 +21,7 @@ class FindRide extends Component {
 
     handleSubmit = (event) => {
         
-        this.props.findRide(this.state);
+        this.props.store.findRide(this.state);
         event.preventDefault();
 
         this.setState({
@@ -40,6 +41,7 @@ class FindRide extends Component {
     render() {
 
         return(
+        <>
             <div className="container">
                 <div className="row">
                     <h1>Search a Ride</h1>  
@@ -72,6 +74,12 @@ class FindRide extends Component {
                     </Form>
                 </div>
             </div>
+            {
+                this.props.store.rides.rides.length !== 0
+                ? <Ride rides={this.props.store.rides} /> 
+                : null
+            }
+        </>
         );
     }
 }

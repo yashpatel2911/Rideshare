@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import { withRouter } from 'react-router'
 
 export const getDateN = (N = 0) => {
     var dateN = new Date()

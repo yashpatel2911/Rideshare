@@ -35,7 +35,7 @@ class PostRide extends Component {
 
     handleSubmit = (event) => {
         
-        this.props.postRide(this.state)
+        this.props.store.postRide(this.state)
         event.preventDefault()
         
         this.setState({
