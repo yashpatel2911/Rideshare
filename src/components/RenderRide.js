@@ -1,38 +1,26 @@
 import React from 'react';
 import { Card, Button,CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import { Loading } from './LoadingComponent';
-import { firestore } from '../firebase/firebase';
+import {FaUser , FaCarAlt} from 'react-icons/fa'
+import {BiTimeFive} from 'react-icons/bi'
+import {ImLocation} from 'react-icons/im'
 
     function RenderRide({ ride }) {
-        let rider = []
-        firestore.collection('users').doc(ride.userID).get().then(
-            (doc) => {
-                if(doc.exists){
-                    let data
-                    data = doc.data()  
-                    rider.push(data)
-                }
-                else {
-                    console.log("error")
-                }
-            }
-        )
-        console.log(rider[0])
-
+       
         return(
+            
             <Card>
                 <CardBody>
-                    <CardText style={{color:'blue', fontWeight:'bold'}}>{}</CardText>
-                    <CardText style={{color:'blue', fontWeight:'bold'}}>{ride.src} to {ride.dst}</CardText>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}><FaUser size={"1.25em"} /> {ride.userName}</CardText>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}><FaCarAlt size={"1.25em"} /> {ride.src} to {ride.dst}</CardText>
                     
-                    <CardText style={{fontWeight:'bold'}}> Leaving: {ride.rideDate} at {ride.rideTime}</CardText>
-                    <CardText style={{fontWeight:'bold'}}> Returning: {ride.rideDate} at {ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> <BiTimeFive size={"1.25em"} /> Leaving: {ride.rideDate} at {ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> <BiTimeFive size={"1.25em"} /> Returning: {ride.rideDate} at {ride.rideTime}</CardText>
 
                     <br/>
 
-                    <CardText style={{color:'GrayText'}}> Pickup: {ride.src}</CardText>
-                    <CardText style={{color:'GrayText'}}> Dropoff: {ride.dst}</CardText>
+                    <CardText style={{color:'GrayText'}}> <ImLocation size={"1.25em"} /> Pickup: {ride.src}</CardText>
+                    <CardText style={{color:'GrayText'}}> <ImLocation size={"1.25em"} /> Dropoff: {ride.dst}</CardText>
                     <Button type="submit" onClick={(e) => {handleSubmit(e, ride._id)}}>Book</Button>
                 </CardBody>
             </Card>
@@ -50,7 +38,7 @@ import { firestore } from '../firebase/firebase';
             return (
                 
                 <div key={ride._id} className="col-12 ">
-                    <RenderRide ride={ride} />
+                    <RenderRide ride={ride}/>
                     <hr style={{width:'15%', margin:'20px 0px 20px 0px'}} />
                 </div>
                 
