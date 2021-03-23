@@ -68,6 +68,7 @@ class Main extends Component {
       ...this.returnUserStore(),
       loginUser: this.props.loginUser,
       googleLogin: this.props.googleLogin, 
+      logoutUser: this.props.logoutUser
     }
 
     return store
