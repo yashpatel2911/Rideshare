@@ -36,7 +36,7 @@ class RideRequest extends Component {
         e.preventDefault();
 
         // Inserting the request into database
-        this.props.autoRideRequest({ rideDetail:this.state })
+        this.props.store.autoRideRequest({ rideDetail:this.state })
 
         // Setting back to the original state
         this.setState({
