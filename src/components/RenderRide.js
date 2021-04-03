@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, Button,CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import { Loading } from './LoadingComponent';
-import { firestore } from '../firebase/firebase';
+import {FaUser , FaCarAlt} from 'react-icons/fa'
+import {BiTimeFive} from 'react-icons/bi'
+import {ImLocation} from 'react-icons/im'
 
 class RenderRide extends React.Component{
 
@@ -15,13 +16,7 @@ class RenderRide extends React.Component{
     }
 
     componentDidMount() {
-        this.props.ride.userRef.get().then(
-            snap => {
-                this.setState({userData: snap.data()})
-            }
-        )
-
-        console.log(this.state.userData)
+        
         
     }
 
@@ -31,19 +26,21 @@ class RenderRide extends React.Component{
     }
 
     render() {
+       
         return(
+            
             <Card>
                 <CardBody>
-                    <CardText style={{color:'blue', fontWeight:'bold'}}>{}</CardText>
-                    <CardText style={{color:'blue', fontWeight:'bold'}}>{this.state.ride.src} to {this.state.ride.dst}</CardText>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}><FaUser size={"1.25em"} /> {this.state.ride.userName}</CardText>
+                    <CardText style={{color:'blue', fontWeight:'bold'}}><FaCarAlt size={"1.25em"} /> {this.state.ride.src} to {this.state.ride.dst}</CardText>
                     
-                    <CardText style={{fontWeight:'bold'}}> Leaving: {this.state.ride.rideDate} at {this.state.ride.rideTime}</CardText>
-                    <CardText style={{fontWeight:'bold'}}> Returning: {this.state.ride.rideDate} at {this.state.ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> <BiTimeFive size={"1.25em"} /> Leaving: {this.state.ride.rideDate} at {this.state.ride.rideTime}</CardText>
+                    <CardText style={{fontWeight:'bold'}}> <BiTimeFive size={"1.25em"} /> Returning: {this.state.ride.rideDate} at {this.state.ride.rideTime}</CardText>
 
                     <br/>
 
-                    <CardText style={{color:'GrayText'}}> Pickup: {this.state.ride.src}</CardText>
-                    <CardText style={{color:'GrayText'}}> Dropoff: {this.state.ride.dst}</CardText>
+                    <CardText style={{color:'GrayText'}}> <ImLocation size={"1.25em"} /> Pickup: {this.state.ride.src}</CardText>
+                    <CardText style={{color:'GrayText'}}> <ImLocation size={"1.25em"} /> Dropoff: {this.state.ride.dst}</CardText>
                     <Button type="submit" onClick={(e) => {handleBook(e, this.props.history, this.state.ride._id)}}>Book</Button>
                 </CardBody>
             </Card>

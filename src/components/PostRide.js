@@ -16,7 +16,8 @@ class PostRide extends Component {
             dst: "",
             rideDate: getDateN(1),
             rideTime: "06:00",
-            userID: ""
+            userID: "",
+            userName: ""
         }
     }
 
@@ -28,7 +29,8 @@ class PostRide extends Component {
         }
         else {
             this.setState({
-                userID: user.uid
+                userID: user.uid,
+                userName: user.displayName
             })
         }
     }
