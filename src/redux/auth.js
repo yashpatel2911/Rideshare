@@ -1,70 +1,70 @@
-import * as ActionTypes from './ActionTypes';
+import * as ActionTypes from "./ActionTypes";
 
 // The auth reducer. The starting state sets authentication
 // based on a token being in local storage. In a real app,
 // we would also want a util to check if the token is expired.
-export const Auth = (state = {
+export const Auth = (
+  state = {
+    isLoading: false,
+    isAuthenticated: false,
+    user: null,
+    errMess: null,
+  },
+  action
+) => {
+  switch (action.type) {
+    case ActionTypes.LOGIN_REQUEST:
+      return { ...state, isLoading: true, isAuthenticated: false };
+    case ActionTypes.LOGIN_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: true,
+        errMess: "",
+        user: action.user,
+      };
+    case ActionTypes.LOGIN_FAILURE:
+      return {
+        ...state,
         isLoading: false,
         isAuthenticated: false,
+        errMess: action.message,
+      };
+    case ActionTypes.SIGNUP_REQUEST:
+      return { ...state, isLoading: true, isAuthenticated: false };
+    case ActionTypes.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: true,
+        errMess: "",
+        user: action.user,
+      };
+    case ActionTypes.SIGNUP_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: false,
+        errMess: action.message,
+      };
+    case ActionTypes.LOGOUT_REQUEST:
+      return { ...state, isLoading: true, isAuthenticated: true };
+    case ActionTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: false,
+        token: "",
         user: null,
-        errMess: null
-    }, action) => {
-    switch (action.type) {
-        case ActionTypes.LOGIN_REQUEST:
-            return {...state,
-                isLoading: true,
-                isAuthenticated: false,
-            };
-        case ActionTypes.LOGIN_SUCCESS:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: true,
-                errMess: '',
-                user: action.user
-            };
-        case ActionTypes.LOGIN_FAILURE:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: false,
-                errMess: action.message
-            };
-        case ActionTypes.SIGNUP_REQUEST:
-            return {...state,
-                isLoading: true,
-                isAuthenticated: false,
-            };
-        case ActionTypes.SIGNUP_SUCCESS:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: true,
-                errMess: '',
-                user: action.user
-            };
-        case ActionTypes.SIGNUP_FAILURE:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: false,
-                errMess: action.message
-            };
-        case ActionTypes.LOGOUT_REQUEST:
-            return {...state,
-                isLoading: true,
-                isAuthenticated: true
-            };
-        case ActionTypes.LOGOUT_SUCCESS:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: false,
-                token: '',
-                user: null
-            };
-        case ActionTypes.SETUP_LOCALSTORAGE:
-            return {...state,
-                isLoading: false,
-                isAuthenticated: true,
-                user: action.user
-            };
-        default:
-            return state
-    }
-}
+      };
+    case ActionTypes.SETUP_LOCALSTORAGE:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: true,
+        user: action.user,
+      };
+    default:
+      return state;
+  }
+};
